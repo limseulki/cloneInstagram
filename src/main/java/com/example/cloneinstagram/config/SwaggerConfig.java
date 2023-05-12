@@ -16,7 +16,7 @@ public class SwaggerConfig {
         Info info = new Info()
                 .title("Instagram Clone API")
                 .version("v1.0.0")
-                .description("클 론코딩 프로젝트 API 명세서입니다.");
+                .description("클론코딩 프로젝트 API 명세서입니다.");
 
         // Security 스키마 설정
         SecurityScheme bearerAuth = new SecurityScheme()
