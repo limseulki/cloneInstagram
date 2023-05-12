@@ -19,5 +19,4 @@ public class BoardLoveController {
     public ResponseMsgDto boardLove(@PathVariable(name = "boardId") Long id, @AuthenticationPrincipal UserDetailsImpl userDetails){
         return boardLoveService.boardLove(id, userDetails.getUser());
     }
-
 }

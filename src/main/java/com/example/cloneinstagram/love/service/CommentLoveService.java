@@ -12,15 +12,16 @@ import com.example.cloneinstagram.member.entity.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
 public class CommentLoveService {
 
     private final CommentRepository commentRepository;
-
     private final CommentLoveRepository commentLoveRepository;
 
+    @Transactional
     public ResponseMsgDto commentLove(Long id, Member member) {
         try {
             if (commentLoveRepository.findByCommentIdAndMemberId(id, member.getId())) {
