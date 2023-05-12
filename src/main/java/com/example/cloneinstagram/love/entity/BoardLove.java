@@ -25,4 +25,9 @@ public class BoardLove {
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
+
+    public BoardLove(Board board, Member member) {
+        this.board = board;
+        this.member = member;
+    }
 }
