@@ -1,5 +1,6 @@
 package com.example.cloneinstagram.love.entity;
 
+import com.example.cloneinstagram.board.entity.Board;
 import com.example.cloneinstagram.comment.entity.Comment;
 import com.example.cloneinstagram.member.entity.Member;
 import lombok.Getter;
@@ -26,4 +27,9 @@ public class CommentLove {
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
+
+    public CommentLove(Comment comment, Member member) {
+        this.comment = comment;
+        this.member = member;
+    }
 }
