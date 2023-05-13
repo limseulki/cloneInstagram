@@ -46,8 +46,10 @@ dependencies {
 	//mysql
 	runtimeOnly 'com.mysql:mysql-connector-j'
 
+
 	//jasypt
-	implementation group: 'com.github.ulisesbocchio', name: 'jasypt-spring-boot-starter', version: '3.0.4'
+	dependencies{implementation group: 'com.github.ulisesbocchio', name: 'jasypt-spring-boot-starter', version: '3.0.4'}
+
 
 
 }
