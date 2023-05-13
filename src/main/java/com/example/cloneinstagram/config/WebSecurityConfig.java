@@ -25,7 +25,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @EnableGlobalMethodSecurity(securedEnabled = true) // @Secured 어노테이션 활성화
 public class WebSecurityConfig {
 
-    private final Jwtutil jwtUtil;
+    private final JwtUtil jwtUtil;
 
     private static final String[] PERMIT_URL_ARRAY = {
             /* swagger v2 */
