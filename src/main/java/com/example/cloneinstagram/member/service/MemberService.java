@@ -114,10 +114,10 @@ public class MemberService {
 //
 //        return ResponseEntity.ok(new StatusResponseDto(followMember.getNickName(), "팔로우 성공"));
 
+
+    //사진 업데이트 미적용
     @Transactional(readOnly = true)
     public MyFeedResponseDto memberInfo(String nickName, Member member){
-//        Member selectMember = memberRepository.findByNickName(nickName).orElseThrow(
-//                () -> new CustomException(ErrorCode.NOT_FOUND_USER));
         String logInNickName = member.getNickName();
         if(!StringUtils.pathEquals(nickName, logInNickName)){
             throw new CustomException(ErrorCode.CANNOT_ACCESS);
@@ -131,5 +131,25 @@ public class MemberService {
         myFeedResponseDto.setFollowerCnt(followerCnt);
 
         return myFeedResponseDto;
+    }
+
+
+    //사진 업데이트 미적용
+    @Transactional
+    public ResponseEntity<StatusResponseDto> updateInfo(String nickName, MyFeedRequestDto myFeedRequestDto, Member member){
+        Member updateMember = memberRepository.findByNickName(nickName).orElseThrow(
+                () -> new CustomException(ErrorCode.NOT_FOUND_USER));
+
+        String logInNickName = member.getNickName();
+        if(!StringUtils.pathEquals(nickName, logInNickName)){
+            throw new CustomException(ErrorCode.CANNOT_ACCESS);
+        }
+
+        updateMember.setNickName(myFeedRequestDto.getNickName());
+        updateMember.setContents(myFeedRequestDto.getContents());
+
+        memberRepository.save(updateMember);
+
+        return ResponseEntity.ok(new StatusResponseDto(nickName, "업데이트 완료"));
     }
 }

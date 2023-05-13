@@ -1,5 +1,6 @@
 package com.example.cloneinstagram.member.entity;
 
+import com.example.cloneinstagram.board.entity.Board;
 import lombok.*;
 import net.bytebuddy.dynamic.loading.InjectionClassLoader;
 
@@ -28,6 +29,9 @@ public class Member {
     @Lob
     private String img;
 
+    @Column
+    private String contents;
+
     @Column(nullable = false)
     private String password;
 
@@ -36,6 +40,9 @@ public class Member {
 
     @OneToMany(mappedBy = "memberFollower", cascade = CascadeType.REMOVE)
     private List<Follow> followerList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    private List<Board> boardList = new ArrayList<>();
 
     public Member(String nickName, String email, String password) {
         this.nickName = nickName;
