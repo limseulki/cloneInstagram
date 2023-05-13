@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
+import static javax.persistence.FetchType.*;
+
 @Entity
 @Getter
 @NoArgsConstructor
@@ -16,11 +18,18 @@ public class BoardLove {
     @Column(name = "boardlove_id")
     private Long id;
 
-//    @ManyToOne
-//    @JoinColumn(name = "board_id")
-//    private Board board;
-//
-//    @ManyToOne
-//    @JoinColumn(name = "member_id")
-//    private Member member;
+
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "board_id")
+    private Board board;
+
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "member_id")
+    private Member member;
+
+    public BoardLove(Board board, Member member) {
+        this.board = board;
+        this.member = member;
+    }
+
 }
