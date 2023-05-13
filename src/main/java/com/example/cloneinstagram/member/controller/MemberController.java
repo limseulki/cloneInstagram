@@ -47,4 +47,11 @@ public class MemberController {
     public MyFeedResponseDto memberInfo(@PathVariable String nickName, @AuthenticationPrincipal UserDetailsImpl userDetails){
         return memberService.memberInfo(nickName, userDetails.getUser());
     }
+
+    @PutMapping("/{nickName}")
+    public ResponseEntity<StatusResponseDto> updateInfo(@PathVariable String nickName,
+                                                        @RequestBody MyFeedRequestDto myFeedRequestDto,
+                                                        @AuthenticationPrincipal UserDetailsImpl userDetails){
+        return memberService.updateInfo(nickName, myFeedRequestDto, userDetails.getUser());
+    }
 }

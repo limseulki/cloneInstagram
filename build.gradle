@@ -47,9 +47,14 @@ dependencies {
 	runtimeOnly 'com.mysql:mysql-connector-j'
 
 	//jasypt
-	dependencies{implementation group: 'com.github.ulisesbocchio', name: 'jasypt-spring-boot-starter', version: '3.0.4'}
+	implementation group: 'com.github.ulisesbocchio', name: 'jasypt-spring-boot-starter', version: '3.0.4'
 
 
+}
+
+test {
+	useJUnitPlatform()
+	systemProperty 'jasypt.encryptor.password', findProperty("jasypt.encryptor.password")
 }
 
 tasks.named('test') {

@@ -25,7 +25,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @EnableGlobalMethodSecurity(securedEnabled = true) // @Secured 어노테이션 활성화
 public class WebSecurityConfig {
 
-    private final JwtAuthFilter jwtAuthFilter;
+    private final JwtUtil jwtUtil;
 
     private static final String[] PERMIT_URL_ARRAY = {
             /* swagger v2 */
@@ -55,7 +55,6 @@ public class WebSecurityConfig {
     }
 
     @Bean
-
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.cors().and()
                 .csrf().disable();
