@@ -13,6 +13,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class BoardLoveService {
@@ -23,8 +25,7 @@ public class BoardLoveService {
     // 피드 좋아요
     @Transactional
     public ResponseMsgDto boardLove(Long id, Member member) {
-        try {
-            if (boardLoveRepository.findByBoardIdAndMemberId(id, member.getId())) {
+            if (boardLoveRepository.findBoardLoveCheck(id, member.getId())) {
                 boardLoveRepository.deleteByBoardIdAndMemberId(id, member.getId());
                 return ResponseMsgDto.setSuccess(HttpStatus.OK.value(), "좋아요 취소 성공", null);
             } else {
@@ -33,15 +34,12 @@ public class BoardLoveService {
                 boardLoveRepository.save(boardLove);
                 return ResponseMsgDto.setSuccess(HttpStatus.OK.value(), "좋아요 등록 성공", null);
             }
-        }catch(Exception e){
-            return ResponseMsgDto.setFail(HttpStatus.BAD_REQUEST.value(), "실패");
-        }
     }
 
-    // 피드 존재 확인 메서드
     public Board findBoardById(Long id){
         return boardRepository.findById(id).orElseThrow(
                 () -> new CustomException(ErrorCode.BOARD_NOT_FOUND)
         );
     }
+
 }
