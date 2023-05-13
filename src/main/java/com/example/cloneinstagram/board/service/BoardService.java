@@ -8,7 +8,7 @@ import com.example.cloneinstagram.board.dto.BoardRequestDto;
 import com.example.cloneinstagram.board.dto.BoardResponseDto;
 import com.example.cloneinstagram.board.entity.Board;
 import com.example.cloneinstagram.board.repository.BoardRepository;
-import com.example.cloneinstagram.commonDto.ResponseMsgDto;
+import com.example.cloneinstagram.common.ResponseMsgDto;
 import com.example.cloneinstagram.exception.CustomException;
 import com.example.cloneinstagram.exception.ErrorCode;
 import com.example.cloneinstagram.member.entity.Member;
@@ -25,8 +25,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoField;
-
-import static com.example.cloneinstagram.exception.ErrorCode.AUTHOR_NOT_SAME_MOD;
 
 @Slf4j
 @Service

@@ -2,11 +2,9 @@ package com.example.cloneinstagram.board.controller;
 
 import com.example.cloneinstagram.board.dto.BoardRequestDto;
 import com.example.cloneinstagram.board.service.BoardService;
-import com.example.cloneinstagram.commonDto.ResponseMsgDto;
+import com.example.cloneinstagram.common.ResponseMsgDto;
 import com.example.cloneinstagram.security.UserDetailsImpl;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;

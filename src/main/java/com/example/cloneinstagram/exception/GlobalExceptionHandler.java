@@ -1,7 +1,7 @@
 package com.example.cloneinstagram.exception;
 
 
-import com.example.cloneinstagram.commonDto.ResponseMsgDto;
+import com.example.cloneinstagram.common.ResponseMsgDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -1,6 +1,7 @@
 package com.example.cloneinstagram.board.entity;
 
 import com.example.cloneinstagram.board.dto.BoardRequestDto;
+import com.example.cloneinstagram.common.Timestamped;
 import com.example.cloneinstagram.member.entity.Member;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Builder;
@@ -27,7 +28,7 @@ public class Board extends Timestamped {
     @Column
     private String contents;
 
-    @Column
+    @Column(nullable = false)
     private String nickName;
 
     @ManyToOne(fetch = FetchType.LAZY)

@@ -1,4 +1,4 @@
-package com.example.cloneinstagram.commonDto;
+package com.example.cloneinstagram.common;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;

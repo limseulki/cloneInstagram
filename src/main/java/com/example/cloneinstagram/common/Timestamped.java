@@ -1,4 +1,4 @@
-package com.example.cloneinstagram.board.entity;
+package com.example.cloneinstagram.common;
 
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;

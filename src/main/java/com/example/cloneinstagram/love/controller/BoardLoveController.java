@@ -1,6 +1,6 @@
 package com.example.cloneinstagram.love.controller;
 
-import com.example.cloneinstagram.commonDto.ResponseMsgDto;
+import com.example.cloneinstagram.common.ResponseMsgDto;
 import com.example.cloneinstagram.love.service.BoardLoveService;
 import com.example.cloneinstagram.security.UserDetailsImpl;
 import io.swagger.v3.oas.annotations.Operation;

@@ -2,7 +2,7 @@ package com.example.cloneinstagram.love.service;
 
 import com.example.cloneinstagram.board.entity.Board;
 import com.example.cloneinstagram.board.repository.BoardRepository;
-import com.example.cloneinstagram.commonDto.ResponseMsgDto;
+import com.example.cloneinstagram.common.ResponseMsgDto;
 import com.example.cloneinstagram.exception.CustomException;
 import com.example.cloneinstagram.exception.ErrorCode;
 import com.example.cloneinstagram.love.entity.BoardLove;
@@ -12,8 +12,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor

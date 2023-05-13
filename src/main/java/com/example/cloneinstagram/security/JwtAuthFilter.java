@@ -1,6 +1,6 @@
 package com.example.cloneinstagram.security;
 
-import com.example.cloneinstagram.commonDto.ResponseMsgDto;
+import com.example.cloneinstagram.common.ResponseMsgDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;

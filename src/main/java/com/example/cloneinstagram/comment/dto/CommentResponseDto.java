@@ -11,14 +11,14 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class CommentResponseDto {
 
-    private Long id;
+    private Long commentId;
     private Long userId;
     private String nickName;
     private String contents;
     private LocalDateTime createdAt;
 
     public CommentResponseDto(Comment comment) {
-        this.id = comment.getId();
+        this.commentId = comment.getId();
         this.userId = comment.getMember().getId();
         this.nickName = comment.getMember().getNickName();
         this.contents = comment.getContents();
