@@ -42,4 +42,16 @@ public class GlobalExceptionHandler {
         }
         return ResponseMsgDto.setFail(HttpStatus.BAD_REQUEST.value(), sb.toString());
     }
+
+    // NullPointerException 클래스 예외 핸들러
+    @ExceptionHandler({NullPointerException.class})
+    public ResponseEntity handleNullPointerException(NullPointerException e) {
+        log.error("NullPointerException: {}", e.getMessage());
+        LinkedHashMap<String, Object> responseMap = new LinkedHashMap<>();
+        responseMap.put("status", HttpStatus.BAD_REQUEST.value());
+        responseMap.put("message", e.getMessage());
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST.value())
+                .body(responseMap);
+    }
 }

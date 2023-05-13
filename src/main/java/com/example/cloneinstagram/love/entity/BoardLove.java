@@ -18,6 +18,7 @@ public class BoardLove {
     @Column(name = "boardlove_id")
     private Long id;
 
+
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "board_id")
     private Board board;
@@ -30,4 +31,5 @@ public class BoardLove {
         this.board = board;
         this.member = member;
     }
+
 }
