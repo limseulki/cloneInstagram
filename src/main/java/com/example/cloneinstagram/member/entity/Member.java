@@ -31,19 +31,11 @@ public class Member {
     @Column(nullable = false)
     private String password;
 
-    @ManyToOne
-    @JoinColumn
-    private Member memberFollowing = this;
+    @OneToMany(mappedBy = "memberFollowing", cascade = CascadeType.REMOVE)
+    private List<Follow> followingList = new ArrayList<>();
 
-    @ManyToOne
-    @JoinColumn
-    private Member memberFollower = this;
-
-    @OneToMany(mappedBy = "userFollowing")
-    private List<Member> followingList = new ArrayList<>();
-
-    @OneToMany(mappedBy = "userFollow")
-    private List<Member> followerList = new ArrayList<>();
+    @OneToMany(mappedBy = "memberFollower", cascade = CascadeType.REMOVE)
+    private List<Follow> followerList = new ArrayList<>();
 
     public Member(String nickName, String email, String password) {
         this.nickName = nickName;
@@ -51,24 +43,24 @@ public class Member {
         this.password = password;
     }
 
-    public void addFollowing(Member following) {
-        this.followingList.add(following);
-
-        if(!following.getFollowingList().contains(this)) {
-            following.getFollowerList().add(this);
-        }
-        if(!following.getMemberFollower().getFollowerList().contains(this)) {
-            following.getMemberFollower().getFollowerList().add(this);
-        }
-    }
-    public void addFollower(Member follower) {
-        this.followerList.add(follower);
-
-        if(follower.getFollowingList().contains(this)) {
-            follower.getFollowingList().add(this);
-        }
-        if(!follower.getMemberFollowing().getFollowingList().contains(this)) {
-            follower.getMemberFollowing().getFollowingList().add(this);
-        }
-    }
+//    public void addFollowing(Member following) {
+//        this.followingList.add(following);
+//
+//        if(!following.getFollowingList().contains(this)) {
+//            following.getFollowerList().add(this);
+//        }
+//        if(!following.getMemberFollower().getFollowerList().contains(this)) {
+//            following.getMemberFollower().getFollowerList().add(this);
+//        }
+//    }
+//    public void addFollower(Member follower) {
+//        this.followerList.add(follower);
+//
+//        if(follower.getFollowingList().contains(this)) {
+//            follower.getFollowingList().add(this);
+//        }
+//        if(!follower.getMemberFollowing().getFollowingList().contains(this)) {
+//            follower.getMemberFollowing().getFollowingList().add(this);
+//        }
+//    }
 }
