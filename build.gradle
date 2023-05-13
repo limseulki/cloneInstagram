@@ -38,6 +38,9 @@ dependencies {
 	// swagger
 	implementation 'org.springdoc:springdoc-openapi-ui:1.6.8'
 
+	implementation 'org.springframework.boot:spring-boot-devtools'
+	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+
 }
 
 tasks.named('test') {
