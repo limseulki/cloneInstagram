@@ -15,6 +15,7 @@ public class CommentLoveController {
 
     private final CommentLoveService commentLoveService;
 
+    //댓글 좋아요
     @PostMapping("/comments/{commentId}")
     public ResponseMsgDto commentLove(@PathVariable(name = "commentId") Long id, @AuthenticationPrincipal UserDetailsImpl userDetails){
         return commentLoveService.commentLove(id, userDetails.getUser());

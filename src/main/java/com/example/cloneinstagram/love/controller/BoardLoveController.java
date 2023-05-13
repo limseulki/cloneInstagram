@@ -15,6 +15,7 @@ public class BoardLoveController {
 
     private final BoardLoveService boardLoveService;
 
+    //피드 좋아요
     @PostMapping("/boards/{boardId}")
     public ResponseMsgDto boardLove(@PathVariable(name = "boardId") Long id, @AuthenticationPrincipal UserDetailsImpl userDetails){
         return boardLoveService.boardLove(id, userDetails.getUser());
