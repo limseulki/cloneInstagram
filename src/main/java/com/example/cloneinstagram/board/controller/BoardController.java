@@ -36,16 +36,14 @@ public class BoardController {
 
     // 게시글 수정
     @Operation(summary = "게시글 수정 API", description = "게시글 수정")
-    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "게시글 수정 완료")})
-    @PutMapping(value = "/{postId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseMsgDto<?> updatePost(@PathVariable(name = "postId") Long id, BoardRequestDto boardRequestDto,
+    @PutMapping(value = "/{postId}")
+    public ResponseMsgDto<?> updatePost(@PathVariable(name = "postId") Long id, @RequestBody BoardRequestDto boardRequestDto,
                                         @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return boardService.updatePost(id, boardRequestDto, userDetails.getUser());
     }
 
     // 게시글 삭제
     @Operation(summary = "게시글 삭제 API", description = "게시글 삭제 후 삭제된 아이디 반환")
-    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "게시글 삭제 완료")})
     @DeleteMapping("/{postId}")
     public ResponseMsgDto<?> deletePost(@PathVariable(name = "postId") Long id, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return boardService.deletePost(id, userDetails.getUser());
