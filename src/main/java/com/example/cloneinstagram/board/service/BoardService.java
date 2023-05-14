@@ -1,7 +1,10 @@
 package com.example.cloneinstagram.board.service;
 
+import com.amazonaws.AmazonServiceException;
+import com.amazonaws.SdkClientException;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
+import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.example.cloneinstagram.board.dto.BoardRequestDto;
@@ -69,6 +72,7 @@ public class BoardService {
         imageUrl = amazonS3Client.getUrl(bucketName, imageName).toString();
 
         board = Board.builder()
+                .imageName(imageName)
                 .imageUrl(imageUrl)
                 .contents(boardRequestDto.getContents())
                 .member(userDetails.getUser())
@@ -93,6 +97,7 @@ public class BoardService {
     public ResponseMsgDto<?> deletePost(Long id, Member member) {
         matchAuthor(id, member);
         board = existBoard(id);
+        amazonS3Client.deleteObject(new DeleteObjectRequest(bucketName, board.getImageName()));
         boardRepository.deleteById(id);
         return ResponseMsgDto.setSuccess(HttpStatus.OK.value(), "게시글 삭제 완료", null);
     }
