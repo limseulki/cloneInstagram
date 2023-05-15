@@ -25,7 +25,7 @@ public class Member {
     @Column(nullable = false)
     private String email;
 
-    @Column
+    @Column(length = 500)
     @Lob
     private String img;
 
@@ -41,7 +41,7 @@ public class Member {
     @OneToMany(mappedBy = "memberFollower", cascade = CascadeType.REMOVE)
     private List<Follow> followerList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
     private List<Board> boardList = new ArrayList<>();
 
     public Member(String nickName, String email, String password) {

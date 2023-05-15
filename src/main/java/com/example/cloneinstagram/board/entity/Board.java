@@ -5,6 +5,7 @@ import com.example.cloneinstagram.common.Timestamped;
 import com.example.cloneinstagram.love.entity.BoardLove;
 import com.example.cloneinstagram.member.entity.Member;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -39,7 +40,7 @@ public class Board extends Timestamped {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
-    @JsonBackReference
+    @JsonIgnore
     private Member member;
 
     @OneToMany(mappedBy = "board", cascade = CascadeType.REMOVE)

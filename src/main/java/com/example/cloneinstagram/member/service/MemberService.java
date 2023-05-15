@@ -1,5 +1,11 @@
 package com.example.cloneinstagram.member.service;
 
+import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.model.CannedAccessControlList;
+import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.example.cloneinstagram.board.entity.Board;
+import com.example.cloneinstagram.board.repository.BoardRepository;
 import com.example.cloneinstagram.exception.CustomException;
 import com.example.cloneinstagram.exception.ErrorCode;
 import com.example.cloneinstagram.member.dto.*;
@@ -9,6 +15,8 @@ import com.example.cloneinstagram.member.repository.FollowRepository;
 import com.example.cloneinstagram.member.repository.MemberRepository;
 import com.example.cloneinstagram.security.JwtUtil;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -16,21 +24,35 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.InputStream;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoField;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
 import static com.example.cloneinstagram.exception.ErrorCode.EXIST_EMAIL;
 import static com.example.cloneinstagram.exception.ErrorCode.EXIST_NICKNAME;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class MemberService {
+    private final AmazonS3Client amazonS3Client;
+    private final BoardRepository boardRepository;
     private final MemberRepository memberRepository;
     private final FollowRepository followRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
+
+    private static final String S3_BUCKET_PREFIX = "S3";
+
+    @Value("${cloud.aws.s3.bucket}")
+    private String bucketName;
 
     @Transactional
     public ResponseEntity<StatusResponseDto> signUp(SignUpRequestDto signUpRequestDto){
@@ -124,9 +146,11 @@ public class MemberService {
         }
 
         MyFeedResponseDto myFeedResponseDto = new MyFeedResponseDto(member);
+        List<Board> boardList = boardRepository.findAllByMember(member);
         int followingCnt = followRepository.countAllFollowing(member.getNickName());
         int followerCnt = followRepository.countAllFollower(member.getNickName());
 
+        myFeedResponseDto.setBoardList(boardList);
         myFeedResponseDto.setFollowingCnt(followingCnt);
         myFeedResponseDto.setFollowerCnt(followerCnt);
 
@@ -136,7 +160,7 @@ public class MemberService {
 
     //사진 업데이트 미적용
     @Transactional
-    public ResponseEntity<StatusResponseDto> updateInfo(String nickName, MyFeedRequestDto myFeedRequestDto, Member member){
+    public ResponseEntity<StatusResponseDto> updateInfo(String nickName, MultipartFile image, MyFeedRequestDto myFeedRequestDto, Member member) throws IOException {
         Member updateMember = memberRepository.findByNickName(nickName).orElseThrow(
                 () -> new CustomException(ErrorCode.NOT_FOUND_USER));
 
@@ -147,6 +171,32 @@ public class MemberService {
 
         updateMember.setNickName(myFeedRequestDto.getNickName());
         updateMember.setContents(myFeedRequestDto.getContents());
+
+        LocalDateTime now = LocalDateTime.now();
+        int hour = now.getHour();
+        int minute = now.getMinute();
+        int second = now.getSecond();
+        int millis = now.get(ChronoField.MILLI_OF_SECOND);
+
+        String imageUrl = null;
+
+        // 새로 부여한 이미지명
+        String newFileName = "image" + hour + minute + second + millis;
+        String fileExtension = '.' + image.getOriginalFilename().replaceAll("^.*\\.(.*)$", "$1");
+        String imageName = S3_BUCKET_PREFIX + newFileName + fileExtension;
+
+        // 메타데이터 설정
+        ObjectMetadata objectMetadata = new ObjectMetadata();
+        objectMetadata.setContentType(image.getContentType());
+        objectMetadata.setContentLength(image.getSize());
+
+        InputStream inputStream = image.getInputStream();
+
+        amazonS3Client.putObject(new PutObjectRequest(bucketName, imageName, inputStream, objectMetadata)
+                .withCannedAcl(CannedAccessControlList.PublicRead));
+        imageUrl = amazonS3Client.getUrl(bucketName, imageName).toString();
+
+        updateMember.setImg(imageUrl);
 
         memberRepository.save(updateMember);
 
