@@ -13,6 +13,6 @@ public interface BoardRepository extends JpaRepository<Board, Long> {
 
     List<Board> findAllByMember(Member member);
 
-    List<Board> findAllById(Long id);
+    List<Board> findAllByMemberId(Long id);
 
 }
