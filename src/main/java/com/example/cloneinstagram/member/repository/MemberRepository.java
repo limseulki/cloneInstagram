@@ -17,6 +17,9 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     Optional<Member> findByNickName(String nickName);
     Optional<Member> findByEmail(String email);
 
-    @Query("select new com.example.cloneinstagram.member.dto.MemberResponseDto(m.id, m.nickName) from  Member m")
-    Page<MemberResponseDto> selectAllMember(Pageable pageable);
+    @Query("select new com.example.cloneinstagram.member.dto.MemberResponseDto(f.memberFollower.id, f.memberFollower.nickName, f.memberFollower.img) from Follow f where f.memberFollowing.id = :memberId")
+    Page<MemberResponseDto> selectFollowerMember(Pageable pageable, @Param("memberId") Long memberId);
+
+    @Query("select new com.example.cloneinstagram.member.dto.MemberResponseDto(m.id, m.nickName, m.img) from Member m where not exists (select f from Follow f where f.memberFollowing.id = :memberId AND f.memberFollower.id = m.id)")
+    Page<MemberResponseDto> selectUnFollowerMember(Pageable pageable, @Param("memberId") Long memberId);
 }

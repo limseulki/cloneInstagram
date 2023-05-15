@@ -21,6 +21,10 @@ public enum ErrorCode {
     NOT_FOUND_USER(BAD_REQUEST, "사용자를 찾을 수 없습니다."),
     INVALID_PASSWORD(BAD_REQUEST, "비밀번호가 일치하지 않습니다."),
     CANNOT_ACCESS(BAD_REQUEST, "접근 불가능한 멤버입니다."),
+    NOT_MATCH_NICKNAME(BAD_REQUEST, "닉네임은 대소문자와 '.', '_'만 가능합니다."),
+    NOT_MATCH_EMAIL(BAD_REQUEST, "이메일 형식이 맞지 않습니다."),
+    NOT_MATCH_PASSWORD(BAD_REQUEST, "대소문자, 숫자, 특수문자를 모두 포함된 비밀번호만 가능합니다."),
+    INVALID_PASSWORD_LENGTH(BAD_REQUEST, "비밀번호 길이를 8~20글자만 가능합니다."),
 
     // 404 NOT_FOUND
     USER_NOT_FOUND(NOT_FOUND, "회원을 찾을 수 없습니다."),

@@ -35,10 +35,16 @@ public class MemberController {
         return memberService.logIn(logInRequestDto, httpServletResponse);
     }
 
-    @GetMapping("/")
-    public Page<MemberResponseDto> getMemberList(@AuthenticationPrincipal UserDetailsImpl userDetails,
+    @GetMapping("/followers")
+    public Page<MemberResponseDto> getFollowerMemberList(@AuthenticationPrincipal UserDetailsImpl userDetails,
                                                  @PageableDefault(size = 6, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
-        return memberService.getUserList(userDetails.getUser(), pageable);
+        return memberService.getFollowerUserList(userDetails.getUser(), pageable);
+    }
+
+    @GetMapping("/recommends")
+    public Page<MemberResponseDto> getUnFollowerMemberList(@AuthenticationPrincipal UserDetailsImpl userDetails,
+                                                         @PageableDefault(size = 6, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
+        return memberService.getUnFollowerList(userDetails.getUser(), pageable);
     }
 
     @PostMapping("/{nickName}")

@@ -8,10 +8,11 @@ import lombok.Setter;
 public class MemberResponseDto {
     private Long userId;
     private String nickName;
-    private String email;
+    private String imgUrl;
 
-    public MemberResponseDto(Long userId, String nickName) {
+    public MemberResponseDto(Long userId, String nickName, String img) {
         this.userId = userId;
         this.nickName = nickName;
+        this.imgUrl = img;
     }
 }
