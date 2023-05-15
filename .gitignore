@@ -36,4 +36,7 @@ out/
 ### VS Code ###
 .vscode/
 
+
+### custom ###
 application-s3.properties
+

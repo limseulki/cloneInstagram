@@ -19,7 +19,7 @@ public class CommentLoveController {
     private final CommentLoveService commentLoveService;
 
     //댓글 좋아요
-    @Operation(summary = "댓글 좋아요 API", description = "댓 좋아요")
+    @Operation(summary = "댓글 좋아요 API", description = "댓글 좋아요")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "댓글 좋아요 성공")})
     @PostMapping("/comments/{commentId}")
     public ResponseMsgDto commentLove(@PathVariable(name = "commentId") Long id, @AuthenticationPrincipal UserDetailsImpl userDetails){

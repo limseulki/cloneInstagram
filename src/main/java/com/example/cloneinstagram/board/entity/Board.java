@@ -2,6 +2,7 @@ package com.example.cloneinstagram.board.entity;
 
 import com.example.cloneinstagram.board.dto.BoardRequestDto;
 import com.example.cloneinstagram.common.Timestamped;
+import com.example.cloneinstagram.love.entity.BoardLove;
 import com.example.cloneinstagram.member.entity.Member;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -11,6 +12,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -22,6 +25,9 @@ public class Board extends Timestamped {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "board_id")
     private Long id;
+
+    @Column
+    private String imageName;
 
     @Column(length = 500, nullable = false)
     private String imageUrl;
@@ -37,8 +43,12 @@ public class Board extends Timestamped {
     @JsonIgnore
     private Member member;
 
+    @OneToMany(mappedBy = "board", cascade = CascadeType.REMOVE)
+    private List<BoardLove> boardLoveList = new ArrayList<>();
+
     @Builder
-    public Board(String imageUrl, String contents, Member member) {
+    public Board(String imageName, String imageUrl, String contents, Member member) {
+        this.imageName = imageName;
         this.imageUrl = imageUrl;
         this.contents = contents;
         this.member = member;

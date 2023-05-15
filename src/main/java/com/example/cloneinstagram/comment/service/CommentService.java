@@ -1,8 +1,6 @@
 package com.example.cloneinstagram.comment.service;
 
 
-import com.example.cloneinstagram.board.dto.BoardRequestDto;
-import com.example.cloneinstagram.board.dto.BoardResponseDto;
 import com.example.cloneinstagram.board.entity.Board;
 import com.example.cloneinstagram.board.repository.BoardRepository;
 import com.example.cloneinstagram.comment.dto.CommentRequestDto;
@@ -15,7 +13,6 @@ import com.example.cloneinstagram.exception.ErrorCode;
 import com.example.cloneinstagram.member.entity.Member;
 import com.example.cloneinstagram.member.repository.MemberRepository;
 import com.example.cloneinstagram.security.JwtUtil;
-import com.example.cloneinstagram.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -63,7 +60,7 @@ public class CommentService {
         matchAuthor(id, member);
         comment = existComment(id);
         commentRepository.deleteById(id);
-        return ResponseMsgDto.setSuccess(HttpStatus.OK.value(), "게시글 삭제 완료", null);
+        return ResponseMsgDto.setSuccess(HttpStatus.OK.value(), "댓글 삭제 완료", null);
     }
 
 

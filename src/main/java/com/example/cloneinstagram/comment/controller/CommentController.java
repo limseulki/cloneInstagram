@@ -5,13 +5,11 @@ import com.example.cloneinstagram.comment.dto.CommentRequestDto;
 import com.example.cloneinstagram.comment.service.CommentService;
 import com.example.cloneinstagram.common.ResponseMsgDto;
 import com.example.cloneinstagram.security.UserDetailsImpl;
-import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.io.IOException;
 
 @RestController
 @RequiredArgsConstructor
