@@ -16,6 +16,7 @@ public class MainFeedDto {
     private Long boardId;
     private String imageUrl;
     private String contents;
+    private String nickName;
     private LocalDateTime createdAt;
     private List<CommentResponseDto> commentList;
 
@@ -23,6 +24,7 @@ public class MainFeedDto {
         this.boardId = board.getId();
         this.imageUrl = board.getImageUrl();
         this.contents = board.getContents();
+        this.nickName = board.getNickName();
         this.createdAt = board.getCreatedAt();
         this.commentList = commentList;
     }
