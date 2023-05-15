@@ -5,17 +5,14 @@ import com.example.cloneinstagram.board.entity.Board;
 import com.example.cloneinstagram.comment.dto.CommentRequestDto;
 import com.example.cloneinstagram.common.Timestamped;
 import com.example.cloneinstagram.member.entity.Member;
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+
 
 @Getter
 @Setter
