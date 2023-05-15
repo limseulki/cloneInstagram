@@ -46,4 +46,11 @@ public class BoardController {
     public ResponseMsgDto<?> deletePost(@PathVariable(name = "postId") Long id, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return boardService.deletePost(id, userDetails.getUser());
     }
+
+    // 전체 피드 조회
+    @Operation(summary = "전체 피드 조회 API", description = "전체 피드 조회")
+    @GetMapping("/")
+    public ResponseMsgDto getMainFeed(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return boardService.getMainFeed(userDetails.getUser());
+    }
 }
