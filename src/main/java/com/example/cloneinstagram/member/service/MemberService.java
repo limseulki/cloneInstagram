@@ -34,9 +34,9 @@ import java.time.temporal.ChronoField;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.regex.Pattern;
 
-import static com.example.cloneinstagram.exception.ErrorCode.EXIST_EMAIL;
-import static com.example.cloneinstagram.exception.ErrorCode.EXIST_NICKNAME;
+import static com.example.cloneinstagram.exception.ErrorCode.*;
 
 @Slf4j
 @Service
@@ -60,14 +60,27 @@ public class MemberService {
         String email = signUpRequestDto.getEmail();
         String password = passwordEncoder.encode(signUpRequestDto.getPassword());
 
+        if(!Pattern.matches("^[a-zA-Z0-9._]+$", nickName)){
+            throw new CustomException(NOT_MATCH_NICKNAME);
+        }
         Optional<Member> checkNickName = memberRepository.findByNickName(nickName);
         if (checkNickName.isPresent()) {
             throw new CustomException(EXIST_NICKNAME);
         }
 
+        if(!Pattern.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", email)){
+            throw new CustomException(NOT_MATCH_EMAIL);
+        }
         Optional<Member> checkEmail = memberRepository.findByEmail(email);
         if (checkEmail.isPresent()) {
             throw new CustomException(EXIST_EMAIL);
+        }
+
+        if(!Pattern.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>\\/?]).+$", password)){
+            throw new CustomException(NOT_MATCH_PASSWORD);
+        }
+        if (password.length() <= 8 || password.length() >= 20) {
+            throw new CustomException(INVALID_PASSWORD_LENGTH);
         }
 
         Member member = new Member(nickName, email, password);
@@ -93,8 +106,13 @@ public class MemberService {
     }
 
     @Transactional(readOnly = true)
-    public Page<MemberResponseDto> getUserList(Member member, Pageable pageable){
-        return memberRepository.selectAllMember(pageable);
+    public Page<MemberResponseDto> getFollowerUserList(Member member, Pageable pageable){
+        return memberRepository.selectFollowerMember(pageable, member.getId());
+    }
+
+    @Transactional(readOnly = true)
+    public Page<MemberResponseDto> getUnFollowerList(Member member, Pageable pageable){
+        return memberRepository.selectUnFollowerMember(pageable, member.getId());
     }
 
     @Transactional
