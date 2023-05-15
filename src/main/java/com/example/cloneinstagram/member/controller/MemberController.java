@@ -9,12 +9,15 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.io.IOException;
 
 @RestController
 @RequestMapping("/members")
@@ -48,10 +51,11 @@ public class MemberController {
         return memberService.memberInfo(nickName, userDetails.getUser());
     }
 
-    @PutMapping("/{nickName}")
+    @PutMapping(value = "/{nickName}", consumes = { MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE }, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<StatusResponseDto> updateInfo(@PathVariable String nickName,
-                                                        @RequestBody MyFeedRequestDto myFeedRequestDto,
-                                                        @AuthenticationPrincipal UserDetailsImpl userDetails){
-        return memberService.updateInfo(nickName, myFeedRequestDto, userDetails.getUser());
+                                                        @RequestPart(value = "image") MultipartFile image,
+                                                        @Valid @RequestPart(value = "feed") MyFeedRequestDto myFeedRequestDto,
+                                                        @AuthenticationPrincipal UserDetailsImpl userDetails) throws IOException {
+        return memberService.updateInfo(nickName, image, myFeedRequestDto, userDetails.getUser());
     }
 }

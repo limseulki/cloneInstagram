@@ -1,6 +1,7 @@
 package com.example.cloneinstagram.member.dto;
 
 import com.example.cloneinstagram.board.dto.BoardResponseDto;
+import com.example.cloneinstagram.board.entity.Board;
 import com.example.cloneinstagram.member.entity.Member;
 import lombok.Getter;
 import lombok.Setter;
@@ -22,9 +23,12 @@ public class MyFeedResponseDto {
     public MyFeedResponseDto(Member member){
         this.memberId = member.getId();
         this.nickName = member.getNickName();
+        this.img = member.getImg();
         this.contents = member.getContents();
-        this.boardResponseDtoList = member.getBoardList()
-                .stream()
+    }
+
+    public void setBoardList(List<Board> boardList) {
+        this.boardResponseDtoList = boardList.stream()
                 .map(BoardResponseDto::new)
                 .collect(Collectors.toList());
     }
