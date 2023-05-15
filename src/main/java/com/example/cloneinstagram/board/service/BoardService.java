@@ -1,7 +1,6 @@
 package com.example.cloneinstagram.board.service;
 
 import com.amazonaws.services.s3.AmazonS3Client;
-//import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.ObjectMetadata;
@@ -17,7 +16,9 @@ import com.example.cloneinstagram.comment.repository.CommentRepository;
 import com.example.cloneinstagram.common.ResponseMsgDto;
 import com.example.cloneinstagram.exception.CustomException;
 import com.example.cloneinstagram.exception.ErrorCode;
+import com.example.cloneinstagram.member.entity.Follow;
 import com.example.cloneinstagram.member.entity.Member;
+import com.example.cloneinstagram.member.repository.FollowRepository;
 import com.example.cloneinstagram.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -43,6 +44,7 @@ public class BoardService {
     private final AmazonS3Client amazonS3Client;
     private final BoardRepository boardRepository;
     private final CommentRepository commentRepository;
+    private final FollowRepository followRepository;
     private static final String S3_BUCKET_PREFIX = "S3";
 
     @Value("${cloud.aws.s3.bucket}")
@@ -113,10 +115,18 @@ public class BoardService {
     public ResponseMsgDto<?> getMainFeed(Member member) {
         List<MainFeedDto> mainFeedList = new ArrayList<>();
 
-        for(Board board : boardRepository.findAllById(member.getId())) {
+        for(Board board : boardRepository.findAllByMemberId(member.getId())) {
             mainFeedList.add(new MainFeedDto(board, getCommentList(board.getId())));
         }
-        mainFeedList.sort(Comparator.comparing(MainFeedDto::getBoardId).reversed());
+
+        for(Follow follow : followRepository.findAllByMemberFollowing(member)) {
+            Long followerId = follow.getMemberFollower().getId();
+            for(Board board : boardRepository.findAllByMemberId(followerId)) {
+                mainFeedList.add(new MainFeedDto(board, getCommentList(board.getId())));
+            }
+        }
+
+        mainFeedList.sort(Comparator.comparing(MainFeedDto::getCreatedAt).reversed());
         return ResponseMsgDto.setSuccess(HttpStatus.OK.value(), "전체 피드 조회", mainFeedList);
     }
 

@@ -1,9 +1,12 @@
 package com.example.cloneinstagram.member.repository;
 
 import com.example.cloneinstagram.member.entity.Follow;
+import com.example.cloneinstagram.member.entity.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+
+import java.util.List;
 
 public interface FollowRepository extends JpaRepository<Follow, Long> {
     @Query("select f from Follow f where f.memberFollowing.nickName = :followingNickName and f.memberFollower.nickName = :followerNickName")
@@ -14,4 +17,6 @@ public interface FollowRepository extends JpaRepository<Follow, Long> {
 
     @Query("select count(f) from Follow f where f.memberFollower.nickName = :followerNickName")
     int countAllFollower(@Param("followerNickName") String followerNickName);
+
+    List<Follow> findAllByMemberFollowing(Member memberFollowing);
 }
