@@ -39,7 +39,6 @@ dependencies {
 	implementation 'org.springdoc:springdoc-openapi-ui:1.6.8'
 
 
-
 	// S3 빌드
 	implementation 'io.awspring.cloud:spring-cloud-starter-aws:2.4.2'
 
@@ -50,7 +49,7 @@ dependencies {
 	//jasypt
 	dependencies{implementation group: 'com.github.ulisesbocchio', name: 'jasypt-spring-boot-starter', version: '3.0.4'}
 
-
+	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-validation', version: '2.5.2'
 
 }
 

@@ -200,6 +200,6 @@ public class MemberService {
 
         memberRepository.save(updateMember);
 
-        return ResponseEntity.ok(new StatusResponseDto(nickName, "업데이트 완료"));
+        return ResponseEntity.ok(new StatusResponseDto(updateMember.getNickName(), "업데이트 완료"));
     }
 }

@@ -54,9 +54,9 @@ public class JwtUtil {
         Date date = new Date();
 
         return BEARER_PREFIX + Jwts.builder()
-                .setSubject(userNickName)
+                .setSubject(email)
                 .claim("userId", id)
-                .claim("email", email)
+                .claim("nickName", userNickName)
                 .setExpiration(new Date(date.getTime() + TOKEN_TIME))
                 .setIssuedAt(date)
                 .signWith(key, signatureAlgorithm)
@@ -83,8 +83,8 @@ public class JwtUtil {
         return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
     }
 
-    public Authentication createAuthentication(String nickName) {
-        UserDetails userDetails = userDetailsService.loadUserByUsername(nickName);
+    public Authentication createAuthentication(String email) {
+        UserDetails userDetails = userDetailsService.loadUserByUsername(email);
         return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
     }
 }
