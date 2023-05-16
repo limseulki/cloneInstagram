@@ -1,5 +1,6 @@
 package com.example.cloneinstagram.member.controller;
 
+import com.example.cloneinstagram.common.ResponseMsgDto;
 import com.example.cloneinstagram.member.dto.*;
 import com.example.cloneinstagram.member.service.MemberService;
 import com.example.cloneinstagram.security.UserDetailsImpl;
@@ -26,12 +27,12 @@ public class MemberController {
     private final MemberService memberService;
 
     @PostMapping("/signup")
-    public ResponseEntity<StatusResponseDto> signup(@Valid @RequestBody SignUpRequestDto signUpRequestDto){
+    public ResponseEntity<ResponseMsgDto<Void>> signup(@Valid @RequestBody SignUpRequestDto signUpRequestDto){
         return memberService.signUp(signUpRequestDto);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<StatusResponseDto> logIn(@RequestBody LogInRequestDto logInRequestDto, HttpServletResponse httpServletResponse){
+    public ResponseEntity<ResponseMsgDto<Void>> logIn(@RequestBody LogInRequestDto logInRequestDto, HttpServletResponse httpServletResponse){
         return memberService.logIn(logInRequestDto, httpServletResponse);
     }
 
@@ -48,7 +49,7 @@ public class MemberController {
     }
 
     @PostMapping("/{nickName}")
-    public ResponseEntity<StatusResponseDto> follow(@PathVariable String nickName, @AuthenticationPrincipal UserDetailsImpl userDetails){
+    public ResponseEntity<ResponseMsgDto<Void>> follow(@PathVariable String nickName, @AuthenticationPrincipal UserDetailsImpl userDetails){
         return memberService.follow(nickName, userDetails.getUser());
     }
 
@@ -58,7 +59,7 @@ public class MemberController {
     }
 
     @PutMapping(value = "/{nickName}", consumes = { MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE }, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<StatusResponseDto> updateInfo(@PathVariable String nickName,
+    public ResponseEntity<ResponseMsgDto<Void>> updateInfo(@PathVariable String nickName,
                                                         @RequestPart(value = "image") MultipartFile image,
                                                         @Valid @RequestPart(value = "feed") MyFeedRequestDto myFeedRequestDto,
                                                         @AuthenticationPrincipal UserDetailsImpl userDetails) throws IOException {
