@@ -6,6 +6,7 @@ import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.example.cloneinstagram.board.entity.Board;
 import com.example.cloneinstagram.board.repository.BoardRepository;
+import com.example.cloneinstagram.common.ResponseMsgDto;
 import com.example.cloneinstagram.exception.CustomException;
 import com.example.cloneinstagram.exception.ErrorCode;
 import com.example.cloneinstagram.member.dto.*;
@@ -19,6 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -55,7 +57,7 @@ public class MemberService {
     private String bucketName;
 
     @Transactional
-    public ResponseEntity<StatusResponseDto> signUp(SignUpRequestDto signUpRequestDto){
+    public ResponseEntity<ResponseMsgDto<Void>> signUp(SignUpRequestDto signUpRequestDto){
         String  nickName = signUpRequestDto.getNickName();
         String email = signUpRequestDto.getEmail();
         String password = passwordEncoder.encode(signUpRequestDto.getPassword());
@@ -85,11 +87,11 @@ public class MemberService {
 
         Member member = new Member(nickName, email, password);
         memberRepository.save(member);
-        return ResponseEntity.ok(new StatusResponseDto(member.getNickName(), "회원가입 성공"));
+        return ResponseEntity.ok(ResponseMsgDto.setSuccess(HttpStatus.OK.value(), "회원가입 성공", null));
     }
 
     @Transactional
-    public ResponseEntity<StatusResponseDto> logIn(LogInRequestDto logInRequestDto, HttpServletResponse httpServletResponse){
+    public ResponseEntity<ResponseMsgDto<Void>> logIn(LogInRequestDto logInRequestDto, HttpServletResponse httpServletResponse){
         String email = logInRequestDto.getEmail();
         String password = logInRequestDto.getPassword();
 
@@ -102,7 +104,7 @@ public class MemberService {
         String token = jwtUtil.createToken(member.getId(), member.getNickName(), member.getEmail());
         httpServletResponse.addHeader(JwtUtil.AUTHORIZATION_HEADER, token);
 
-        return ResponseEntity.ok(new StatusResponseDto(member.getNickName(), "로그인 성공"));
+        return ResponseEntity.ok(ResponseMsgDto.setSuccess(HttpStatus.OK.value(), "로그인 성공", null));
     }
 
     @Transactional(readOnly = true)
@@ -116,7 +118,7 @@ public class MemberService {
     }
 
     @Transactional
-    public ResponseEntity<StatusResponseDto> follow(String nickName, Member member) {
+    public ResponseEntity<ResponseMsgDto<Void>> follow(String nickName, Member member) {
         Member followMember = memberRepository.findByNickName(nickName).orElseThrow(
                 () -> new CustomException(ErrorCode.NOT_FOUND_USER));
 
@@ -127,11 +129,11 @@ public class MemberService {
 
         if (existFollow != null) {
             followRepository.delete(existFollow);
-            return ResponseEntity.ok(new StatusResponseDto(followMember.getNickName(), "팔로우 취소"));
+            return ResponseEntity.ok(ResponseMsgDto.setSuccess(HttpStatus.OK.value(), "팔로우 취소", null));
         } else {
             followRepository.save(follow);
         }
-        return ResponseEntity.ok(new StatusResponseDto(followMember.getNickName(), "팔로우 등록"));
+        return ResponseEntity.ok(ResponseMsgDto.setSuccess(HttpStatus.OK.value(), "팔로우 등록", null));
 
     }
 //
@@ -176,9 +178,8 @@ public class MemberService {
     }
 
 
-    //사진 업데이트 미적용
     @Transactional
-    public ResponseEntity<StatusResponseDto> updateInfo(String nickName, MultipartFile image, MyFeedRequestDto myFeedRequestDto, Member member) throws IOException {
+    public ResponseEntity<ResponseMsgDto<Void>> updateInfo(String nickName, MultipartFile image, MyFeedRequestDto myFeedRequestDto, Member member) throws IOException {
         Member updateMember = memberRepository.findByNickName(nickName).orElseThrow(
                 () -> new CustomException(ErrorCode.NOT_FOUND_USER));
 
@@ -218,6 +219,6 @@ public class MemberService {
 
         memberRepository.save(updateMember);
 
-        return ResponseEntity.ok(new StatusResponseDto(updateMember.getNickName(), "업데이트 완료"));
+        return ResponseEntity.ok(ResponseMsgDto.setSuccess(HttpStatus.OK.value(), "업데이트 완료", null));
     }
 }
