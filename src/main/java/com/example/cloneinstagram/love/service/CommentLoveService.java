@@ -24,7 +24,7 @@ public class CommentLoveService {
 
     // 댓글 좋아요
     @Transactional
-    public ResponseMsgDto commentLove(Long id, Member member) {
+    public ResponseMsgDto<Void> commentLove(Long id, Member member) {
         if (commentLoveRepository.findCommentLoveCheck(id, member.getId())) {
             commentLoveRepository.deleteByCommentIdAndMemberId(id, member.getId());
             return ResponseMsgDto.setSuccess(HttpStatus.OK.value(), "좋아요 취소 성공", null);
