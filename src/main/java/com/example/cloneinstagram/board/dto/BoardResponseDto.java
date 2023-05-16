@@ -5,8 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
-import java.time.LocalDateTime;
-
 @Getter
 @AllArgsConstructor
 public class BoardResponseDto {
@@ -14,7 +12,7 @@ public class BoardResponseDto {
     private String imageUrl;
     private String contents;
     private String nickName;
-    private LocalDateTime createdAt;
+    private String createdAt;
 
     @Builder
     public BoardResponseDto(Board board) {

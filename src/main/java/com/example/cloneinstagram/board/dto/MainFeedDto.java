@@ -6,7 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -17,7 +16,7 @@ public class MainFeedDto {
     private String imageUrl;
     private String contents;
     private String nickName;
-    private LocalDateTime createdAt;
+    private String createdAt;
     private List<CommentResponseDto> commentList;
 
     public MainFeedDto(Board board, List<CommentResponseDto> commentList) {
