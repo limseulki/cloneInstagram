@@ -4,13 +4,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotBlank;
+
 
 @Getter
 @NoArgsConstructor
 public class CommentRequestDto {
-    @NotNull
+    @NotBlank
     private Long boardId;
-    @NotNull
+    @NotBlank
     private String contents;
 }
