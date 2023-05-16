@@ -34,23 +34,23 @@ public class BoardController {
 
     // 게시글 수정
     @Operation(summary = "게시글 수정 API", description = "게시글 수정")
-    @PutMapping(value = "/{postId}")
-    public ResponseMsgDto<?> updatePost(@PathVariable(name = "postId") Long id, @RequestBody BoardRequestDto boardRequestDto,
+    @PutMapping(value = "/{boardId}")
+    public ResponseMsgDto<?> updatePost(@PathVariable(name = "boardId") Long id, @RequestBody BoardRequestDto boardRequestDto,
                                         @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return boardService.updatePost(id, boardRequestDto, userDetails.getUser());
     }
 
     // 게시글 삭제
     @Operation(summary = "게시글 삭제 API", description = "게시글 삭제 후 삭제된 아이디 반환")
-    @DeleteMapping("/{postId}")
-    public ResponseMsgDto<?> deletePost(@PathVariable(name = "postId") Long id, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    @DeleteMapping("/{boardId}")
+    public ResponseMsgDto<?> deletePost(@PathVariable(name = "boardId") Long id, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return boardService.deletePost(id, userDetails.getUser());
     }
 
     // 전체 피드 조회
     @Operation(summary = "전체 피드 조회 API", description = "전체 피드 조회")
     @GetMapping("/")
-    public ResponseMsgDto getMainFeed(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+    public ResponseMsgDto<?> getMainFeed(@AuthenticationPrincipal UserDetailsImpl userDetails) {
         return boardService.getMainFeed(userDetails.getUser());
     }
 }
