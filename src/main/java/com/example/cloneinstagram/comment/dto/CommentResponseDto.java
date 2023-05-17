@@ -2,10 +2,7 @@ package com.example.cloneinstagram.comment.dto;
 
 import com.example.cloneinstagram.comment.entity.Comment;
 import lombok.AllArgsConstructor;
-
 import lombok.Getter;
-
-import java.time.LocalDateTime;
 
 @Getter
 @AllArgsConstructor
@@ -15,7 +12,7 @@ public class CommentResponseDto {
     private Long userId;
     private String nickName;
     private String contents;
-    private LocalDateTime createdAt;
+    private String createdAt;
 
     public CommentResponseDto(Comment comment) {
         this.commentId = comment.getId();

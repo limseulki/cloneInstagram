@@ -17,7 +17,6 @@ import com.example.cloneinstagram.board.repository.Tag_BoardRepository;
 import com.example.cloneinstagram.comment.dto.CommentResponseDto;
 import com.example.cloneinstagram.comment.entity.Comment;
 import com.example.cloneinstagram.comment.repository.CommentRepository;
-import com.example.cloneinstagram.common.ResponseMsgDto;
 import com.example.cloneinstagram.exception.CustomException;
 import com.example.cloneinstagram.exception.ErrorCode;
 import com.example.cloneinstagram.member.entity.Follow;
@@ -27,7 +26,7 @@ import com.example.cloneinstagram.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -60,7 +59,7 @@ public class BoardService {
 
     // 게시글 작성
     @Transactional
-    public ResponseMsgDto<?> createBoard(MultipartFile image, BoardRequestDto boardRequestDto, UserDetailsImpl userDetails) throws IOException {
+    public ResponseEntity<BoardResponseDto> createBoard(MultipartFile image, BoardRequestDto boardRequestDto, UserDetailsImpl userDetails) throws IOException {
         // 파일명 새로 부여를 위한 현재 시간 알아내기
         LocalDateTime now = LocalDateTime.now();
         int hour = now.getHour();
@@ -95,6 +94,7 @@ public class BoardService {
         // JPA에서 관계를 맺고 있는 엔티티의 영속성 처리 문제를 위해 먼저 board를 1차 캐시에 save를 보냄
         boardRepository.save(board);
 
+
         boardRequestDto.setHashtags(boardRequestDto.getHashtags());
 
         for(String hashTag : boardRequestDto.getHashtags()){
@@ -114,35 +114,38 @@ public class BoardService {
 
 
         return ResponseMsgDto.setSuccess(HttpStatus.OK.value(), "게시글 작성 완료", new BoardResponseDto(board));
+
     }
 
     // 게시글 수정
     @Transactional
-    public ResponseMsgDto<?> updatePost(Long id, BoardRequestDto boardRequestDto, Member member) {
+    public ResponseEntity<BoardResponseDto> updatePost(Long id, BoardRequestDto boardRequestDto, Member member) {
         matchAuthor(id, member);
         board = existBoard(id);
         board.update(boardRequestDto);
-        return ResponseMsgDto.setSuccess(HttpStatus.OK.value(), "게시글 수정 완료",  new BoardResponseDto(board));
+        return ResponseEntity.ok(new BoardResponseDto(board));
     }
 
     // 게시글 삭제
     @Transactional
-    public ResponseMsgDto<?> deletePost(Long id, Member member) {
+    public ResponseEntity<Void> deletePost(Long id, Member member) {
         matchAuthor(id, member);
         board = existBoard(id);
         amazonS3Client.deleteObject(new DeleteObjectRequest(bucketName, board.getImageName()));
         boardRepository.deleteById(id);
-        return ResponseMsgDto.setSuccess(HttpStatus.OK.value(), "게시글 삭제 완료", null);
+        return ResponseEntity.ok(null);
     }
 
     // 전체 피드 조회
-    public ResponseMsgDto<?> getMainFeed(Member member) {
+    public ResponseEntity<List<MainFeedDto>> getMainFeed(Member member) {
         List<MainFeedDto> mainFeedList = new ArrayList<>();
 
+        // 내 게시물 조회
         for(Board board : boardRepository.findAllByMemberId(member.getId())) {
             mainFeedList.add(new MainFeedDto(board, getCommentList(board.getId())));
         }
 
+        // 팔로워 게시물 조회
         for(Follow follow : followRepository.findAllByMemberFollowing(member)) {
             Long followerId = follow.getMemberFollower().getId();
             for(Board board : boardRepository.findAllByMemberId(followerId)) {
@@ -150,8 +153,9 @@ public class BoardService {
             }
         }
 
+        // 작성일 기준 내림차순 정렬
         mainFeedList.sort(Comparator.comparing(MainFeedDto::getCreatedAt).reversed());
-        return ResponseMsgDto.setSuccess(HttpStatus.OK.value(), "전체 피드 조회", mainFeedList);
+        return ResponseEntity.ok(mainFeedList);
     }
 
     public List<MainFeedDto> searchByTag(String hashTag, Member member){

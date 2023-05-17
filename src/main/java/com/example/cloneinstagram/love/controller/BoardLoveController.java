@@ -22,7 +22,7 @@ public class BoardLoveController {
     @Operation(summary = "피드 좋아요 API", description = "피드 좋아요")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "피드 좋아요 성공")})
     @PostMapping("/boards/{boardId}")
-    public ResponseMsgDto boardLove(@PathVariable(name = "boardId") Long id, @AuthenticationPrincipal UserDetailsImpl userDetails){
+    public ResponseMsgDto<Void> boardLove(@PathVariable(name = "boardId") Long id, @AuthenticationPrincipal UserDetailsImpl userDetails){
         return boardLoveService.boardLove(id, userDetails.getUser());
     }
 }
