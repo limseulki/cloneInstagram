@@ -4,14 +4,16 @@ package com.example.cloneinstagram.comment.entity;
 import com.example.cloneinstagram.board.entity.Board;
 import com.example.cloneinstagram.comment.dto.CommentRequestDto;
 import com.example.cloneinstagram.common.Timestamped;
+import com.example.cloneinstagram.love.entity.CommentLove;
 import com.example.cloneinstagram.member.entity.Member;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Getter
@@ -40,7 +42,8 @@ public class Comment extends Timestamped {
     @Column(nullable = false)
     private String contents;
 
-
+    @OneToMany(mappedBy = "comment", cascade = CascadeType.REMOVE)
+    private List<CommentLove> commentLoveList = new ArrayList<>();
 
     public Comment(CommentRequestDto commentRequestDto, Board board, Member member) {
         this.contents = commentRequestDto.getContents();

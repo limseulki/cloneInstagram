@@ -19,6 +19,8 @@ import com.example.cloneinstagram.comment.entity.Comment;
 import com.example.cloneinstagram.comment.repository.CommentRepository;
 import com.example.cloneinstagram.exception.CustomException;
 import com.example.cloneinstagram.exception.ErrorCode;
+import com.example.cloneinstagram.love.repository.BoardLoveRepository;
+import com.example.cloneinstagram.love.repository.CommentLoveRepository;
 import com.example.cloneinstagram.member.entity.Follow;
 import com.example.cloneinstagram.member.entity.Member;
 import com.example.cloneinstagram.member.repository.FollowRepository;
@@ -54,12 +56,16 @@ public class BoardService {
     private final FollowRepository followRepository;
     private final Tag_BoardRepository tag_boardRepository;
     private final HashTagRepository hashTagRepository;
+    private final BoardLoveRepository boardLoveRepository;
+    private final CommentLoveRepository commentLoveRepository;
     private static final String S3_BUCKET_PREFIX = "S3";
 
     @Value("${cloud.aws.s3.bucket}")
     private String bucketName;
 
     Board board;
+    boolean boardLove;
+    boolean commentLove;
 
     // 게시글 작성
     @Transactional
@@ -140,18 +146,20 @@ public class BoardService {
     // 전체 피드 조회
     public ResponseEntity<Page<MainFeedDto>> getMainFeed(Member member, Pageable pageable) {
         Page<MainFeedDto> mainFeedPage = new PageImpl<>(Collections.emptyList(), pageable, 0);
-
         List<MainFeedDto> mainFeedList = new ArrayList<>();
+
         // 내 게시물 조회
         for (Board board : boardRepository.findAllByMemberId(member.getId())) {
-            mainFeedList.add(new MainFeedDto(board, getCommentList(board.getId())));
+            boardLove = boardLoveRepository.findBoardLoveCheck(board.getId(), member.getId());
+            mainFeedList.add(new MainFeedDto(board, getCommentList(board.getId(), member), boardLove));
         }
 
         // 팔로워 게시물 조회
         for (Follow follow : followRepository.findAllByMemberFollowing(member)) {
             Long followerId = follow.getMemberFollower().getId();
             for (Board board : boardRepository.findAllByMemberId(followerId)) {
-                mainFeedList.add(new MainFeedDto(board, getCommentList(board.getId())));
+                boardLove = boardLoveRepository.findBoardLoveCheck(board.getId(), member.getId());
+                mainFeedList.add(new MainFeedDto(board, getCommentList(board.getId(), member), boardLove));
             }
         }
 
@@ -186,7 +194,8 @@ public class BoardService {
         }
         List<Board> searchBoardByTag = tag_boardRepository.selectBoardByTag(hashTagTable.getId());
         for(Board board : searchBoardByTag){
-            searchFeedByTag.add(new MainFeedDto(board, getCommentList(board.getId())));
+            boardLove = boardLoveRepository.findBoardLoveCheck(board.getId(), member.getId());
+            searchFeedByTag.add(new MainFeedDto(board, getCommentList(board.getId(), member), boardLove));
         }
 
         searchFeedByTag.sort(Comparator.comparing(MainFeedDto::getCreatedAt).reversed());
@@ -194,12 +203,13 @@ public class BoardService {
     }
 
     // 게시글에 달린 댓글 가져오기
-    private List<CommentResponseDto> getCommentList(Long boardId) {
+    private List<CommentResponseDto> getCommentList(Long boardId, Member member) {
         // 게시글에 달린 댓글 찾아서 작성일 기준 오름차순 정렬
         List<Comment> commentList = commentRepository.findAllByBoardIdOrderByCreatedAtAsc(boardId);
         List<CommentResponseDto> commentResponseDtoList = new ArrayList<>();
         for(Comment comment : commentList) {
-            commentResponseDtoList.add(new CommentResponseDto(comment));
+            commentLove = commentLoveRepository.findCommentLoveCheck(comment.getId(), member.getId());
+            commentResponseDtoList.add(new CommentResponseDto(comment, commentLove));
         }
         return commentResponseDtoList;
     }

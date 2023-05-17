@@ -17,14 +17,16 @@ public class MainFeedDto {
     private String contents;
     private String nickName;
     private String createdAt;
+    private boolean boardLove;
     private List<CommentResponseDto> commentList;
 
-    public MainFeedDto(Board board, List<CommentResponseDto> commentList) {
+    public MainFeedDto(Board board, List<CommentResponseDto> commentList, boolean boardLove) {
         this.boardId = board.getId();
         this.imageUrl = board.getImageUrl();
         this.contents = board.getContents();
         this.nickName = board.getNickName();
         this.createdAt = board.getCreatedAt();
+        this.boardLove = boardLove;
         this.commentList = commentList;
     }
 }

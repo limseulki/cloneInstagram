@@ -5,7 +5,6 @@ import com.example.cloneinstagram.comment.entity.Comment;
 import com.example.cloneinstagram.common.Timestamped;
 import com.example.cloneinstagram.love.entity.BoardLove;
 import com.example.cloneinstagram.member.entity.Member;
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Builder;
 import lombok.Getter;
@@ -48,11 +47,9 @@ public class Board extends Timestamped {
     private List<Comment> commentList = new ArrayList<>();
 
     @OneToMany(mappedBy = "board", cascade = CascadeType.REMOVE)
-
     private List<Tag_Board> tag_boardList = new ArrayList<>();
 
     @OneToMany(mappedBy = "board", cascade = CascadeType.REMOVE)
-
     private List<BoardLove> boardLoveList = new ArrayList<>();
 
     @Builder
