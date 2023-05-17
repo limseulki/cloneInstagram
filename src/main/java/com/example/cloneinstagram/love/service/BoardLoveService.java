@@ -20,18 +20,32 @@ public class BoardLoveService {
     private final BoardLoveRepository boardLoveRepository;
     private final BoardRepository boardRepository;
 
+    private static final ThreadLocal<Member> threadLocalMember = new ThreadLocal<>();
+
+
+    public void clearMember() {
+        threadLocalMember.remove();
+    }
+
     // 피드 좋아요
     @Transactional
     public ResponseMsgDto<Void> boardLove(Long id, Member member) {
-            if (boardLoveRepository.findBoardLoveCheck(id, member.getId())) {
-                boardLoveRepository.deleteByBoardIdAndMemberId(id, member.getId());
+        threadLocalMember.set(member);
+
+        Member localMember = threadLocalMember.get();
+        try {
+            if (boardLoveRepository.findBoardLoveCheck(id, localMember.getId())) {
+                boardLoveRepository.deleteByBoardIdAndMemberId(id, localMember.getId());
                 return ResponseMsgDto.setSuccess(HttpStatus.OK.value(), "좋아요 취소 성공", null);
             } else {
                 Board board = findBoardById(id);
-                BoardLove boardLove = new BoardLove(board, member);
+                BoardLove boardLove = new BoardLove(board, localMember);
                 boardLoveRepository.save(boardLove);
                 return ResponseMsgDto.setSuccess(HttpStatus.OK.value(), "좋아요 등록 성공", null);
             }
+        }finally {
+            clearMember();
+        }
     }
 
     public Board findBoardById(Long id){
