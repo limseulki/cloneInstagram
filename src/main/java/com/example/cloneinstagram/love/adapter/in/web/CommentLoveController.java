@@ -1,7 +1,10 @@
-package com.example.cloneinstagram.love.controller;
+package com.example.cloneinstagram.love.adapter.in.web;
 
 import com.example.cloneinstagram.common.ResponseMsgDto;
-import com.example.cloneinstagram.love.service.CommentLoveService;
+import com.example.cloneinstagram.love.application.port.in.BoardLoveInputPort;
+import com.example.cloneinstagram.love.application.port.in.CommentLoveInputPort;
+import com.example.cloneinstagram.love.application.service.CommentLoveService;
+import com.example.cloneinstagram.love.domain.BoardLove;
 import com.example.cloneinstagram.security.UserDetailsImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -16,13 +19,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class CommentLoveController {
 
-    private final CommentLoveService commentLoveService;
+    private final CommentLoveInputPort commentLoveInputPort;
 
     //댓글 좋아요
     @Operation(summary = "댓글 좋아요 API", description = "댓글 좋아요")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "댓글 좋아요 성공")})
     @PostMapping("/comments/{commentId}")
     public ResponseMsgDto<Void> commentLove(@PathVariable(name = "commentId") Long id, @AuthenticationPrincipal UserDetailsImpl userDetails){
-        return commentLoveService.commentLove(id, userDetails.getUser());
+        return commentLoveInputPort.commentLove(id, userDetails.getUser());
     }
 }

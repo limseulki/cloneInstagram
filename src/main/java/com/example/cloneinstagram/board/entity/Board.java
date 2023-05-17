@@ -3,7 +3,7 @@ package com.example.cloneinstagram.board.entity;
 import com.example.cloneinstagram.board.dto.BoardRequestDto;
 import com.example.cloneinstagram.comment.entity.Comment;
 import com.example.cloneinstagram.common.Timestamped;
-import com.example.cloneinstagram.love.entity.BoardLove;
+import com.example.cloneinstagram.love.domain.BoardLove;
 import com.example.cloneinstagram.member.entity.Member;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Builder;

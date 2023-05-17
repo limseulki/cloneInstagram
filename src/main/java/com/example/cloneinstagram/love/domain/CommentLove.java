@@ -1,4 +1,4 @@
-package com.example.cloneinstagram.love.entity;
+package com.example.cloneinstagram.love.domain;
 
 import com.example.cloneinstagram.board.entity.Board;
 import com.example.cloneinstagram.comment.entity.Comment;
