@@ -22,7 +22,7 @@ public class CommentLoveController {
     @Operation(summary = "댓글 좋아요 API", description = "댓글 좋아요")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "댓글 좋아요 성공")})
     @PostMapping("/comments/{commentId}")
-    public ResponseMsgDto commentLove(@PathVariable(name = "commentId") Long id, @AuthenticationPrincipal UserDetailsImpl userDetails){
+    public ResponseMsgDto<Void> commentLove(@PathVariable(name = "commentId") Long id, @AuthenticationPrincipal UserDetailsImpl userDetails){
         return commentLoveService.commentLove(id, userDetails.getUser());
     }
 }

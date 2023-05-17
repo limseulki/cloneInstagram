@@ -6,7 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -16,13 +15,15 @@ public class MainFeedDto {
     private Long boardId;
     private String imageUrl;
     private String contents;
-    private LocalDateTime createdAt;
+    private String nickName;
+    private String createdAt;
     private List<CommentResponseDto> commentList;
 
     public MainFeedDto(Board board, List<CommentResponseDto> commentList) {
         this.boardId = board.getId();
         this.imageUrl = board.getImageUrl();
         this.contents = board.getContents();
+        this.nickName = board.getNickName();
         this.createdAt = board.getCreatedAt();
         this.commentList = commentList;
     }

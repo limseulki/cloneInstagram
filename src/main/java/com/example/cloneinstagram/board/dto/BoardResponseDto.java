@@ -5,21 +5,21 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
-import java.time.LocalDateTime;
-
 @Getter
 @AllArgsConstructor
 public class BoardResponseDto {
     private Long boardId;
     private String imageUrl;
     private String contents;
-    private LocalDateTime createdAt;
+    private String nickName;
+    private String createdAt;
 
     @Builder
     public BoardResponseDto(Board board) {
         this.boardId = board.getId();
         this.imageUrl = board.getImageUrl();
         this.contents = board.getContents();
+        this.nickName = board.getNickName();
         this.createdAt = board.getCreatedAt();
     }
 }

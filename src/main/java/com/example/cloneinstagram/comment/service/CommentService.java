@@ -16,6 +16,7 @@ import com.example.cloneinstagram.security.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -39,8 +40,8 @@ public class CommentService {
 
     // 댓글 작성
     @Transactional
-    public ResponseMsgDto<?> createComment(CommentRequestDto commentRequestDto,
-                                           Member member) {
+    public ResponseEntity<CommentResponseDto> createComment(CommentRequestDto commentRequestDto,
+                                        Member member) {
         // 게시글 검증
         Board board = boardRepository.findById(commentRequestDto.getBoardId())
                 .orElseThrow(() -> new CustomException(ErrorCode.BOARD_NOT_FOUND));
@@ -51,16 +52,16 @@ public class CommentService {
         commentRepository.save(comment);
 
         // 응답 생성
-        return ResponseMsgDto.setSuccess(HttpStatus.OK.value(), "댓글 생성 완료", new CommentResponseDto(comment));
+        return ResponseEntity.ok(new CommentResponseDto(comment));
     }
 
     //댓글 삭제
     @Transactional
-    public ResponseMsgDto<?> deleteComment(Long id, Member member) {
+    public ResponseEntity<Void> deleteComment(Long id, Member member) {
         matchAuthor(id, member);
         comment = existComment(id);
         commentRepository.deleteById(id);
-        return ResponseMsgDto.setSuccess(HttpStatus.OK.value(), "댓글 삭제 완료", null);
+        return ResponseEntity.ok(null);
     }
 
 

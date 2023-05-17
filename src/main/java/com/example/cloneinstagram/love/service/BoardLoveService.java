@@ -22,7 +22,7 @@ public class BoardLoveService {
 
     // 피드 좋아요
     @Transactional
-    public ResponseMsgDto boardLove(Long id, Member member) {
+    public ResponseMsgDto<Void> boardLove(Long id, Member member) {
             if (boardLoveRepository.findBoardLoveCheck(id, member.getId())) {
                 boardLoveRepository.deleteByBoardIdAndMemberId(id, member.getId());
                 return ResponseMsgDto.setSuccess(HttpStatus.OK.value(), "좋아요 취소 성공", null);
