@@ -13,7 +13,6 @@ import java.util.Optional;
 public interface BoardRepository extends JpaRepository<Board, Long> {
     Optional<Board> findByIdAndNickName(Long id, String nickName);
 
-
     List<Board> findAllByMember(Member member);
 
     List<Board> findAllByMemberId(Long id);

@@ -1,16 +1,16 @@
 package com.example.cloneinstagram.board.controller;
 
 import com.example.cloneinstagram.board.dto.BoardRequestDto;
-
 import com.example.cloneinstagram.board.dto.BoardResponseDto;
-
 import com.example.cloneinstagram.board.dto.MainFeedDto;
 import com.example.cloneinstagram.board.service.BoardService;
-import com.example.cloneinstagram.common.ResponseMsgDto;
 import com.example.cloneinstagram.security.UserDetailsImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -56,10 +56,14 @@ public class BoardController {
     // 전체 피드 조회
     @Operation(summary = "전체 피드 조회 API", description = "전체 피드 조회")
     @GetMapping("/")
-    public ResponseEntity<List<MainFeedDto>> getMainFeed(@AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return boardService.getMainFeed(userDetails.getUser());
+    public ResponseEntity<Page<MainFeedDto>> getMainFeed(@AuthenticationPrincipal UserDetailsImpl userDetails,
+                                                         @RequestParam(defaultValue = "5") int pageSize,
+                                                         @RequestParam(defaultValue = "0") int pageNumber) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        return boardService.getMainFeed(userDetails.getUser(), pageable);
     }
 
+    // 태그 검색
     @GetMapping("/{hashTags}")
     public List<MainFeedDto> searchByTag(@PathVariable String hashTags, @AuthenticationPrincipal UserDetailsImpl userDetails){
         return boardService.searchByTag(hashTags, userDetails.getUser());
