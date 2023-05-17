@@ -148,7 +148,10 @@ public class BoardService {
         Page<MainFeedDto> mainFeedPage = new PageImpl<>(Collections.emptyList(), pageable, 0);
         List<MainFeedDto> mainFeedList = new ArrayList<>();
 
-        // 내 게시물 조회
+
+
+        
+
         for (Board board : boardRepository.findAllByMemberId(member.getId())) {
             boardLove = boardLoveRepository.findBoardLoveCheck(board.getId(), member.getId());
             mainFeedList.add(new MainFeedDto(board, getCommentList(board.getId(), member), boardLove));
@@ -160,8 +163,13 @@ public class BoardService {
             for (Board board : boardRepository.findAllByMemberId(followerId)) {
                 boardLove = boardLoveRepository.findBoardLoveCheck(board.getId(), member.getId());
                 mainFeedList.add(new MainFeedDto(board, getCommentList(board.getId(), member), boardLove));
-            }
+              
+
+           }
+          
         }
+         //mainFeedList.addAll(boardRepository.selectFollowingBoard(member));
+
 
         // 작성일 기준 내림차순 정렬
         mainFeedList.sort(Comparator.comparing(MainFeedDto::getCreatedAt).reversed());
@@ -194,8 +202,10 @@ public class BoardService {
         }
         List<Board> searchBoardByTag = tag_boardRepository.selectBoardByTag(hashTagTable.getId());
         for(Board board : searchBoardByTag){
+
             boardLove = boardLoveRepository.findBoardLoveCheck(board.getId(), member.getId());
             searchFeedByTag.add(new MainFeedDto(board, getCommentList(board.getId(), member), boardLove));
+
         }
 
         searchFeedByTag.sort(Comparator.comparing(MainFeedDto::getCreatedAt).reversed());
