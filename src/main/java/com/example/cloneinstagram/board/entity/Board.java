@@ -1,6 +1,7 @@
 package com.example.cloneinstagram.board.entity;
 
 import com.example.cloneinstagram.board.dto.BoardRequestDto;
+import com.example.cloneinstagram.comment.entity.Comment;
 import com.example.cloneinstagram.common.Timestamped;
 import com.example.cloneinstagram.love.entity.BoardLove;
 import com.example.cloneinstagram.member.entity.Member;
@@ -42,6 +43,12 @@ public class Board extends Timestamped {
     @JoinColumn(name = "member_id")
     @JsonIgnore
     private Member member;
+
+    @OneToMany(mappedBy = "board", cascade = CascadeType.REMOVE)
+    private List<Comment> commentList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "board", cascade = CascadeType.REMOVE)
+    private List<Tag_Board> tag_boardList = new ArrayList<>();
 
     @OneToMany(mappedBy = "board", cascade = CascadeType.REMOVE)
     private List<BoardLove> boardLoveList = new ArrayList<>();

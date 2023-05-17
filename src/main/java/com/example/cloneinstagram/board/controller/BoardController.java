@@ -1,6 +1,7 @@
 package com.example.cloneinstagram.board.controller;
 
 import com.example.cloneinstagram.board.dto.BoardRequestDto;
+import com.example.cloneinstagram.board.dto.MainFeedDto;
 import com.example.cloneinstagram.board.service.BoardService;
 import com.example.cloneinstagram.common.ResponseMsgDto;
 import com.example.cloneinstagram.security.UserDetailsImpl;
@@ -14,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.io.IOException;
+import java.util.List;
 
 @Tag(name = "boardController", description = "게시글 API")
 @RestController
@@ -52,5 +54,10 @@ public class BoardController {
     @GetMapping("/")
     public ResponseMsgDto getMainFeed(@AuthenticationPrincipal UserDetailsImpl userDetails) {
         return boardService.getMainFeed(userDetails.getUser());
+    }
+
+    @GetMapping("/{hashTags}")
+    public List<MainFeedDto> searchByTag(@PathVariable String hashTags, @AuthenticationPrincipal UserDetailsImpl userDetails){
+        return boardService.searchByTag(hashTags, userDetails.getUser());
     }
 }

@@ -29,7 +29,8 @@ public enum ErrorCode {
     // 404 NOT_FOUND
     USER_NOT_FOUND(NOT_FOUND, "회원을 찾을 수 없습니다."),
     BOARD_NOT_FOUND(NOT_FOUND, "해당 게시글을 찾을 수 없습니다."),
-    COMMENT_NOT_FOUND(NOT_FOUND, "해당 댓글을 찾을 수 없습니다.");
+    COMMENT_NOT_FOUND(NOT_FOUND, "해당 댓글을 찾을 수 없습니다."),
+    HASHTAG_NOT_FOUND(NOT_FOUND, "해당 태그를 찾을 수 없습니다.");
 
     private final HttpStatus httpStatus;
     private final String detail;
