@@ -13,8 +13,12 @@ public class BoardRequestDto {
 
     public void setHashtags(List<String> hashtags) {
         // 맨 앞에 # 문자가 붙은 문자열만 리스트에 담도록 필터링
-        this.hashtags = hashtags.stream()
-                .filter(tag -> tag.startsWith("#"))
-                .collect(Collectors.toList());
+        if(hashtags != null) {
+            this.hashtags = hashtags.stream()
+                    .filter(tag -> tag.startsWith("#"))
+                    .collect(Collectors.toList());
+        } else {
+            this.hashtags = null;
+        }
     }
 }

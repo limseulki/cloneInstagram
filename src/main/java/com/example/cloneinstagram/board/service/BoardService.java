@@ -96,20 +96,21 @@ public class BoardService {
         // JPA에서 관계를 맺고 있는 엔티티의 영속성 처리 문제를 위해 먼저 board를 1차 캐시에 save를 보냄
         boardRepository.save(board);
 
+        if(boardRequestDto.getHashtags() != null) {
+            boardRequestDto.setHashtags(boardRequestDto.getHashtags());
 
-        boardRequestDto.setHashtags(boardRequestDto.getHashtags());
-
-        for(String hashTag : boardRequestDto.getHashtags()){
-            String hashTagString = hashTag.substring(1);
-            HashTag existHashTag = hashTagRepository.findByHashTag(hashTagString);
-            if(existHashTag != null){
-                Tag_Board tag_board = new Tag_Board(existHashTag, board);
-                tag_boardRepository.save(tag_board);
-            }else {
-                HashTag hashTagTable = new HashTag(hashTagString);
-                hashTagRepository.save(hashTagTable);
-                Tag_Board tag_board = new Tag_Board(hashTagTable, board);
-                tag_boardRepository.save(tag_board);
+            for (String hashTag : boardRequestDto.getHashtags()) {
+                String hashTagString = hashTag.substring(1);
+                HashTag existHashTag = hashTagRepository.findByHashTag(hashTagString);
+                if (existHashTag != null) {
+                    Tag_Board tag_board = new Tag_Board(existHashTag, board);
+                    tag_boardRepository.save(tag_board);
+                } else {
+                    HashTag hashTagTable = new HashTag(hashTagString);
+                    hashTagRepository.save(hashTagTable);
+                    Tag_Board tag_board = new Tag_Board(hashTagTable, board);
+                    tag_boardRepository.save(tag_board);
+                }
             }
         }
 
