@@ -17,6 +17,7 @@ import com.example.cloneinstagram.board.repository.Tag_BoardRepository;
 import com.example.cloneinstagram.comment.dto.CommentResponseDto;
 import com.example.cloneinstagram.comment.entity.Comment;
 import com.example.cloneinstagram.comment.repository.CommentRepository;
+import com.example.cloneinstagram.common.ResponseMsgDto;
 import com.example.cloneinstagram.exception.CustomException;
 import com.example.cloneinstagram.exception.ErrorCode;
 import com.example.cloneinstagram.member.entity.Follow;
@@ -26,6 +27,7 @@ import com.example.cloneinstagram.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -113,7 +115,7 @@ public class BoardService {
 
 
 
-        return ResponseMsgDto.setSuccess(HttpStatus.OK.value(), "게시글 작성 완료", new BoardResponseDto(board));
+        return ResponseEntity.ok(new BoardResponseDto(board));
 
     }
 
