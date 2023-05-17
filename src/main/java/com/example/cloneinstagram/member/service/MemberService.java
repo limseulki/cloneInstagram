@@ -81,7 +81,7 @@ public class MemberService {
         if(!Pattern.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>\\/?]).+$", password)){
             throw new CustomException(NOT_MATCH_PASSWORD);
         }
-        if (password.length() <= 8 || password.length() >= 20) {
+        if (password.length() >= 8 && password.length() <= 20) {
             throw new CustomException(INVALID_PASSWORD_LENGTH);
         }
 

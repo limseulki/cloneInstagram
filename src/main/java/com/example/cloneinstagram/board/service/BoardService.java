@@ -9,7 +9,11 @@ import com.example.cloneinstagram.board.dto.BoardRequestDto;
 import com.example.cloneinstagram.board.dto.BoardResponseDto;
 import com.example.cloneinstagram.board.dto.MainFeedDto;
 import com.example.cloneinstagram.board.entity.Board;
+import com.example.cloneinstagram.board.entity.HashTag;
+import com.example.cloneinstagram.board.entity.Tag_Board;
 import com.example.cloneinstagram.board.repository.BoardRepository;
+import com.example.cloneinstagram.board.repository.HashTagRepository;
+import com.example.cloneinstagram.board.repository.Tag_BoardRepository;
 import com.example.cloneinstagram.comment.dto.CommentResponseDto;
 import com.example.cloneinstagram.comment.entity.Comment;
 import com.example.cloneinstagram.comment.repository.CommentRepository;
@@ -44,6 +48,8 @@ public class BoardService {
     private final BoardRepository boardRepository;
     private final CommentRepository commentRepository;
     private final FollowRepository followRepository;
+    private final Tag_BoardRepository tag_boardRepository;
+    private final HashTagRepository hashTagRepository;
     private static final String S3_BUCKET_PREFIX = "S3";
 
     @Value("${cloud.aws.s3.bucket}")
@@ -61,7 +67,6 @@ public class BoardService {
         int second = now.getSecond();
         int millis = now.get(ChronoField.MILLI_OF_SECOND);
 
-        String imageUrl = null;
 
         // 새로 부여한 이미지명
         String newFileName = "image" + hour + minute + second + millis;
@@ -77,7 +82,7 @@ public class BoardService {
 
         amazonS3Client.putObject(new PutObjectRequest(bucketName, imageName, inputStream, objectMetadata)
                 .withCannedAcl(CannedAccessControlList.PublicRead));
-        imageUrl = amazonS3Client.getUrl(bucketName, imageName).toString();
+        String imageUrl = amazonS3Client.getUrl(bucketName, imageName).toString();
 
         board = Board.builder()
                 .imageName(imageName)
@@ -86,9 +91,30 @@ public class BoardService {
                 .member(userDetails.getUser())
                 .build();
 
+        // JPA에서 관계를 맺고 있는 엔티티의 영속성 처리 문제를 위해 먼저 board를 1차 캐시에 save를 보냄
         boardRepository.save(board);
 
-        return ResponseEntity.ok(new BoardResponseDto(board));
+
+        boardRequestDto.setHashtags(boardRequestDto.getHashtags());
+
+        for(String hashTag : boardRequestDto.getHashtags()){
+            String hashTagString = hashTag.substring(1);
+            HashTag existHashTag = hashTagRepository.findByHashTag(hashTagString);
+            if(existHashTag != null){
+                Tag_Board tag_board = new Tag_Board(existHashTag, board);
+                tag_boardRepository.save(tag_board);
+            }else {
+                HashTag hashTagTable = new HashTag(hashTagString);
+                hashTagRepository.save(hashTagTable);
+                Tag_Board tag_board = new Tag_Board(hashTagTable, board);
+                tag_boardRepository.save(tag_board);
+            }
+        }
+
+
+
+        return ResponseMsgDto.setSuccess(HttpStatus.OK.value(), "게시글 작성 완료", new BoardResponseDto(board));
+
     }
 
     // 게시글 수정
@@ -130,6 +156,23 @@ public class BoardService {
         // 작성일 기준 내림차순 정렬
         mainFeedList.sort(Comparator.comparing(MainFeedDto::getCreatedAt).reversed());
         return ResponseEntity.ok(mainFeedList);
+    }
+
+    public List<MainFeedDto> searchByTag(String hashTag, Member member){
+        List<MainFeedDto> searchFeedByTag = new ArrayList<>();
+
+        HashTag hashTagTable = hashTagRepository.findByHashTag(hashTag);
+
+        if(hashTagTable == null){
+            throw new CustomException(ErrorCode.HASHTAG_NOT_FOUND);
+        }
+        List<Board> searchBoardByTag = tag_boardRepository.selectBoardByTag(hashTagTable.getId());
+        for(Board board : searchBoardByTag){
+            searchFeedByTag.add(new MainFeedDto(board, getCommentList(board.getId())));
+        }
+
+        searchFeedByTag.sort(Comparator.comparing(MainFeedDto::getCreatedAt).reversed());
+        return searchFeedByTag;
     }
 
     // 게시글에 달린 댓글 가져오기

@@ -1,7 +1,9 @@
 package com.example.cloneinstagram.board.controller;
 
 import com.example.cloneinstagram.board.dto.BoardRequestDto;
+
 import com.example.cloneinstagram.board.dto.BoardResponseDto;
+
 import com.example.cloneinstagram.board.dto.MainFeedDto;
 import com.example.cloneinstagram.board.service.BoardService;
 import com.example.cloneinstagram.common.ResponseMsgDto;
@@ -56,5 +58,10 @@ public class BoardController {
     @GetMapping("/")
     public ResponseEntity<List<MainFeedDto>> getMainFeed(@AuthenticationPrincipal UserDetailsImpl userDetails) {
         return boardService.getMainFeed(userDetails.getUser());
+    }
+
+    @GetMapping("/{hashTags}")
+    public List<MainFeedDto> searchByTag(@PathVariable String hashTags, @AuthenticationPrincipal UserDetailsImpl userDetails){
+        return boardService.searchByTag(hashTags, userDetails.getUser());
     }
 }

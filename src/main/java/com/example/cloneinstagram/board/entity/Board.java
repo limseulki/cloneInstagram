@@ -48,6 +48,11 @@ public class Board extends Timestamped {
     private List<Comment> commentList = new ArrayList<>();
 
     @OneToMany(mappedBy = "board", cascade = CascadeType.REMOVE)
+
+    private List<Tag_Board> tag_boardList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "board", cascade = CascadeType.REMOVE)
+
     private List<BoardLove> boardLoveList = new ArrayList<>();
 
     @Builder
