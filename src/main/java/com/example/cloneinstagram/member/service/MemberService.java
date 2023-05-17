@@ -188,7 +188,9 @@ public class MemberService {
             throw new CustomException(ErrorCode.CANNOT_ACCESS);
         }
 
-        updateMember.setNickName(myFeedRequestDto.getNickName());
+        if(myFeedRequestDto.getNickName() != null) {
+            updateMember.setNickName(myFeedRequestDto.getNickName());
+        }
         updateMember.setContents(myFeedRequestDto.getContents());
 
         LocalDateTime now = LocalDateTime.now();
