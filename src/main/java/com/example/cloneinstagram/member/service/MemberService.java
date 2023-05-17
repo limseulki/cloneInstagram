@@ -193,31 +193,33 @@ public class MemberService {
         }
         updateMember.setContents(myFeedRequestDto.getContents());
 
-        LocalDateTime now = LocalDateTime.now();
-        int hour = now.getHour();
-        int minute = now.getMinute();
-        int second = now.getSecond();
-        int millis = now.get(ChronoField.MILLI_OF_SECOND);
+        if(image != null) {
+            LocalDateTime now = LocalDateTime.now();
+            int hour = now.getHour();
+            int minute = now.getMinute();
+            int second = now.getSecond();
+            int millis = now.get(ChronoField.MILLI_OF_SECOND);
 
-        String imageUrl = null;
+            String imageUrl = null;
 
-        // 새로 부여한 이미지명
-        String newFileName = "image" + hour + minute + second + millis;
-        String fileExtension = '.' + image.getOriginalFilename().replaceAll("^.*\\.(.*)$", "$1");
-        String imageName = S3_BUCKET_PREFIX + newFileName + fileExtension;
+            // 새로 부여한 이미지명
+            String newFileName = "image" + hour + minute + second + millis;
+            String fileExtension = '.' + image.getOriginalFilename().replaceAll("^.*\\.(.*)$", "$1");
+            String imageName = S3_BUCKET_PREFIX + newFileName + fileExtension;
 
-        // 메타데이터 설정
-        ObjectMetadata objectMetadata = new ObjectMetadata();
-        objectMetadata.setContentType(image.getContentType());
-        objectMetadata.setContentLength(image.getSize());
+            // 메타데이터 설정
+            ObjectMetadata objectMetadata = new ObjectMetadata();
+            objectMetadata.setContentType(image.getContentType());
+            objectMetadata.setContentLength(image.getSize());
 
-        InputStream inputStream = image.getInputStream();
+            InputStream inputStream = image.getInputStream();
 
-        amazonS3Client.putObject(new PutObjectRequest(bucketName, imageName, inputStream, objectMetadata)
-                .withCannedAcl(CannedAccessControlList.PublicRead));
-        imageUrl = amazonS3Client.getUrl(bucketName, imageName).toString();
+            amazonS3Client.putObject(new PutObjectRequest(bucketName, imageName, inputStream, objectMetadata)
+                    .withCannedAcl(CannedAccessControlList.PublicRead));
+            imageUrl = amazonS3Client.getUrl(bucketName, imageName).toString();
 
-        updateMember.setImg(imageUrl);
+            updateMember.setImg(imageUrl);
+        }
 
         memberRepository.save(updateMember);
 
