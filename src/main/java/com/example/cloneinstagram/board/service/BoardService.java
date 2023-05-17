@@ -17,7 +17,6 @@ import com.example.cloneinstagram.board.repository.Tag_BoardRepository;
 import com.example.cloneinstagram.comment.dto.CommentResponseDto;
 import com.example.cloneinstagram.comment.entity.Comment;
 import com.example.cloneinstagram.comment.repository.CommentRepository;
-import com.example.cloneinstagram.common.ResponseMsgDto;
 import com.example.cloneinstagram.exception.CustomException;
 import com.example.cloneinstagram.exception.ErrorCode;
 import com.example.cloneinstagram.member.entity.Follow;
@@ -27,7 +26,9 @@ import com.example.cloneinstagram.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,6 +39,7 @@ import java.io.InputStream;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoField;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -113,11 +115,7 @@ public class BoardService {
                 }
             }
         }
-
-
-
         return ResponseEntity.ok(new BoardResponseDto(board));
-
     }
 
     // 게시글 수정
@@ -140,27 +138,44 @@ public class BoardService {
     }
 
     // 전체 피드 조회
-    public ResponseEntity<List<MainFeedDto>> getMainFeed(Member member) {
-        List<MainFeedDto> mainFeedList = new ArrayList<>();
+    public ResponseEntity<Page<MainFeedDto>> getMainFeed(Member member, Pageable pageable) {
+        Page<MainFeedDto> mainFeedPage = new PageImpl<>(Collections.emptyList(), pageable, 0);
 
+        List<MainFeedDto> mainFeedList = new ArrayList<>();
         // 내 게시물 조회
-        for(Board board : boardRepository.findAllByMemberId(member.getId())) {
+        for (Board board : boardRepository.findAllByMemberId(member.getId())) {
             mainFeedList.add(new MainFeedDto(board, getCommentList(board.getId())));
         }
 
         // 팔로워 게시물 조회
-        for(Follow follow : followRepository.findAllByMemberFollowing(member)) {
+        for (Follow follow : followRepository.findAllByMemberFollowing(member)) {
             Long followerId = follow.getMemberFollower().getId();
-            for(Board board : boardRepository.findAllByMemberId(followerId)) {
+            for (Board board : boardRepository.findAllByMemberId(followerId)) {
                 mainFeedList.add(new MainFeedDto(board, getCommentList(board.getId())));
             }
         }
 
         // 작성일 기준 내림차순 정렬
         mainFeedList.sort(Comparator.comparing(MainFeedDto::getCreatedAt).reversed());
-        return ResponseEntity.ok(mainFeedList);
+
+        int pageSize = pageable.getPageSize();
+        int currentPage = pageable.getPageNumber();
+        int startItem = currentPage * pageSize;
+        List<MainFeedDto> pagedMainFeedList;
+
+        if (mainFeedList.size() < startItem) {
+            pagedMainFeedList = Collections.emptyList();
+        } else {
+            int toIndex = Math.min(startItem + pageSize, mainFeedList.size());
+            pagedMainFeedList = mainFeedList.subList(startItem, toIndex);
+        }
+
+        mainFeedPage = new PageImpl<>(pagedMainFeedList, pageable, mainFeedList.size());
+
+        return ResponseEntity.ok(mainFeedPage);
     }
 
+    // 태그 검색
     public List<MainFeedDto> searchByTag(String hashTag, Member member){
         List<MainFeedDto> searchFeedByTag = new ArrayList<>();
 
