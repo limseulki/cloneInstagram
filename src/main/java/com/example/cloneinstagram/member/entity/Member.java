@@ -35,12 +35,15 @@ public class Member {
     @Column(nullable = false)
     private String password;
 
+    @Builder.Default
     @OneToMany(mappedBy = "memberFollowing", cascade = CascadeType.REMOVE)
     private List<Follow> followingList = new ArrayList<>();
 
+    @Builder.Default
     @OneToMany(mappedBy = "memberFollower", cascade = CascadeType.REMOVE)
     private List<Follow> followerList = new ArrayList<>();
 
+    @Builder.Default
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
     private List<Board> boardList = new ArrayList<>();
 
