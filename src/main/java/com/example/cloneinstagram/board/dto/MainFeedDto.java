@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 @AllArgsConstructor
@@ -19,12 +20,15 @@ public class MainFeedDto {
     private String createdAt;
     private List<CommentResponseDto> commentList;
 
-    public MainFeedDto(Board board, List<CommentResponseDto> commentList) {
+    public MainFeedDto(Board board) {
         this.boardId = board.getId();
         this.imageUrl = board.getImageUrl();
         this.contents = board.getContents();
         this.nickName = board.getNickName();
         this.createdAt = board.getCreatedAt();
-        this.commentList = commentList;
+        this.commentList = board.getCommentList()
+                .stream()
+                .map(CommentResponseDto::new)
+                .collect(Collectors.toList());;
     }
 }

@@ -145,16 +145,18 @@ public class BoardService {
 
         // 내 게시물 조회
         for(Board board : boardRepository.findAllByMemberId(member.getId())) {
-            mainFeedList.add(new MainFeedDto(board, getCommentList(board.getId())));
+            mainFeedList.add(new MainFeedDto(board));
         }
 
         // 팔로워 게시물 조회
-        for(Follow follow : followRepository.findAllByMemberFollowing(member)) {
-            Long followerId = follow.getMemberFollower().getId();
-            for(Board board : boardRepository.findAllByMemberId(followerId)) {
-                mainFeedList.add(new MainFeedDto(board, getCommentList(board.getId())));
-            }
-        }
+//        for(Follow follow : followRepository.findAllByMemberFollowing(member)) {
+//            Long followerId = follow.getMemberFollower().getId();
+//            for(Board board : boardRepository.findAllByMemberId(followerId)) {
+//                mainFeedList.add(new MainFeedDto(board));
+//            }
+//        }
+
+        mainFeedList.addAll(boardRepository.selectFollowingBoard(member));
 
         // 작성일 기준 내림차순 정렬
         mainFeedList.sort(Comparator.comparing(MainFeedDto::getCreatedAt).reversed());
@@ -171,7 +173,7 @@ public class BoardService {
         }
         List<Board> searchBoardByTag = tag_boardRepository.selectBoardByTag(hashTagTable.getId());
         for(Board board : searchBoardByTag){
-            searchFeedByTag.add(new MainFeedDto(board, getCommentList(board.getId())));
+            searchFeedByTag.add(new MainFeedDto(board));
         }
 
         searchFeedByTag.sort(Comparator.comparing(MainFeedDto::getCreatedAt).reversed());
