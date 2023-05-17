@@ -17,7 +17,8 @@ public class BoardResponseDto {
     private Long boardId;
     private String imageUrl;
     private String contents;
-    private LocalDateTime createdAt;
+    private String nickName;
+    private String createdAt;
     @OrderBy("createdAt DESC")
     private List<CommentResponseDto> commentResponseDtoList;
 
@@ -26,7 +27,8 @@ public class BoardResponseDto {
         this.boardId = board.getId();
         this.imageUrl = board.getImageUrl();
         this.contents = board.getContents();
-        this.createdAt = LocalDateTime.parse(board.getCreatedAt());
+        this.nickName = board.getNickName();
+        this.createdAt = board.getCreatedAt();
         this.commentResponseDtoList = board.getCommentList()
                 .stream()
                 .map(CommentResponseDto::new)
