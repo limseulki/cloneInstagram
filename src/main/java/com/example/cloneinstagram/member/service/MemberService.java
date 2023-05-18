@@ -108,13 +108,13 @@ public class MemberService {
     }
 
     @Transactional(readOnly = true)
-    public Page<MemberResponseDto> getFollowerUserList(Member member, Pageable pageable){
-        return memberRepository.selectFollowerMember(pageable, member.getId());
+    public List<MemberResponseDto> getFollowerUserList(Member member){
+        return memberRepository.selectFollowerMember(member.getId());
     }
 
     @Transactional(readOnly = true)
-    public Page<MemberResponseDto> getUnFollowerList(Member member, Pageable pageable){
-        return memberRepository.selectUnFollowerMember(pageable, member.getId());
+    public List<MemberResponseDto> getUnFollowerList(Member member){
+        return memberRepository.selectUnFollowerMember(member.getId());
     }
 
     @Transactional

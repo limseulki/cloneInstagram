@@ -20,8 +20,7 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     @Query("SELECT new com.example.cloneinstagram.member.dto.MemberResponseDto(f.memberFollower.id, f.memberFollower.nickName, f.memberFollower.img) " +
             "FROM Follow f " +
             "WHERE f.memberFollowing.id = :memberId")
-    Page<MemberResponseDto> selectFollowerMember(
-            Pageable pageable,
+    List<MemberResponseDto> selectFollowerMember(
             @Param("memberId") Long memberId
     );
 
@@ -32,8 +31,7 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
             "FROM Follow f " +
             "WHERE f.memberFollowing.id = :memberId " +
             "AND f.memberFollower.id = m.id)")
-    Page<MemberResponseDto> selectUnFollowerMember(
-            Pageable pageable,
+    List<MemberResponseDto> selectUnFollowerMember(
             @Param("memberId") Long memberId
     );
 }
