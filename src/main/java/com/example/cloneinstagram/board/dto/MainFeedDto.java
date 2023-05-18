@@ -17,6 +17,7 @@ public class MainFeedDto {
     private String imageUrl;
     private String contents;
     private String nickName;
+    private String memberImage;
     private String createdAt;
     private boolean boardLove;
     private List<CommentResponseDto> commentList;
@@ -28,8 +29,8 @@ public class MainFeedDto {
         this.imageUrl = board.getImageUrl();
         this.contents = board.getContents();
         this.nickName = board.getNickName();
+        this.memberImage = board.getMember().getImg();
         this.createdAt = board.getCreatedAt();
-
         this.commentList = board.getCommentList()
                 .stream()
                 .map(CommentResponseDto::new)
