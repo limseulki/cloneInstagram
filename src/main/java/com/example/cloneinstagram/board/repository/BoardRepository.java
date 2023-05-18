@@ -17,9 +17,9 @@ public interface BoardRepository extends JpaRepository<Board, Long> {
 
     List<Board> findAllByMemberId(Long id);
 
-    @Query("SELECT new com.example.cloneinstagram.board.dto.MainFeedDto(b) FROM Board b " +
-            "JOIN b.member m " +
-            "JOIN m.followerList f " +
-            "WHERE f.memberFollowing = :member")
-    List<MainFeedDto> selectFollowingBoard(@Param("member") Member member);
+//    @Query("SELECT new com.example.cloneinstagram.board.dto.MainFeedDto(b) FROM Board b " +
+//            "JOIN b.member m " +
+//            "JOIN m.followerList f " +
+//            "WHERE f.memberFollowing = :member")
+//    List<MainFeedDto> selectFollowingBoard(@Param("member") Member member);
 }

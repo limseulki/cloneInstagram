@@ -11,6 +11,7 @@ public class CommentResponseDto {
     private Long commentId;
     private Long userId;
     private String nickName;
+    private String memberImg;
     private String contents;
     private String createdAt;
     private boolean commentLove;
@@ -19,6 +20,7 @@ public class CommentResponseDto {
         this.commentId = comment.getId();
         this.userId = comment.getMember().getId();
         this.nickName = comment.getMember().getNickName();
+        this.memberImg = comment.getMember().getImg();
         this.contents = comment.getContents();
         this.createdAt = comment.getCreatedAt();
         this.commentLove = commentLove;
@@ -28,6 +30,7 @@ public class CommentResponseDto {
         this.commentId = comment.getId();
         this.userId = comment.getMember().getId();
         this.nickName = comment.getMember().getNickName();
+        this.memberImg = comment.getMember().getImg();
         this.contents = comment.getContents();
         this.createdAt = comment.getCreatedAt();
     }
