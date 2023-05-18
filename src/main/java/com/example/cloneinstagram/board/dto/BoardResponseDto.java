@@ -17,6 +17,7 @@ public class BoardResponseDto {
     private String imageUrl;
     private String contents;
     private String nickName;
+    private String memberImageUrl;
     private String createdAt;
     @OrderBy("createdAt DESC")
     private List<CommentResponseDto> commentResponseDtoList;
@@ -27,6 +28,7 @@ public class BoardResponseDto {
         this.imageUrl = board.getImageUrl();
         this.contents = board.getContents();
         this.nickName = board.getNickName();
+        this.memberImageUrl = board.getMember().getImg();
         this.createdAt = board.getCreatedAt();
         this.commentResponseDtoList = board.getCommentList()
                 .stream()
