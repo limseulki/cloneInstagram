@@ -4,7 +4,7 @@ package com.example.cloneinstagram.comment.entity;
 import com.example.cloneinstagram.board.entity.Board;
 import com.example.cloneinstagram.comment.dto.CommentRequestDto;
 import com.example.cloneinstagram.common.Timestamped;
-import com.example.cloneinstagram.love.entity.CommentLove;
+import com.example.cloneinstagram.love.domain.CommentLove;
 import com.example.cloneinstagram.member.entity.Member;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
