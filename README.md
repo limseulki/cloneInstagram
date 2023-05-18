@@ -29,10 +29,10 @@
 ![Spring](https://img.shields.io/badge/Spring-6DB33F.svg?&style=for-the-badge&logo=Spring&logoColor=white)
 ![SpringBoot](https://img.shields.io/badge/SpringBoot-6DB33F.svg?&style=for-the-badge&logo=SpringBoot&logoColor=white)
 ![MySQL](https://img.shields.io/badge/MySQL-4479A1.svg?&style=for-the-badge&logo=MySQL&logoColor=white)
-![AmazonAWS](https://img.shields.io/badge/AmazonAWS-232F3E.svg?&style=for-the-badge&logo=AmazonAWS&logoColor=white)
-![AmazonEC2](https://img.shields.io/badge/AmazonEC2-FF9900.svg?&style=for-the-badge&logo=AmazonEC2&logoColor=white)
-![AmazonRDS](https://img.shields.io/badge/AmazonRDS-527FFF.svg?&style=for-the-badge&logo=AmazonRDS&logoColor=white)
-![AmazonS3](https://img.shields.io/badge/AmazonS3-569A31.svg?&style=for-the-badge&logo=AmazonS3&logoColor=white)
+![AmazonAWS](https://img.shields.io/badge/Amazon%20AWS-232F3E.svg?&style=for-the-badge&logo=AmazonAWS&logoColor=white)
+![AmazonEC2](https://img.shields.io/badge/Amazon%20EC2-FF9900.svg?&style=for-the-badge&logo=AmazonEC2&logoColor=white)
+![AmazonRDS](https://img.shields.io/badge/Amazon%20RDS-527FFF.svg?&style=for-the-badge&logo=AmazonRDS&logoColor=white)
+![AmazonS3](https://img.shields.io/badge/Amazon%20S3-569A31.svg?&style=for-the-badge&logo=AmazonS3&logoColor=white)
 
 <h1 align="left">🔨 Use Tools </h1>
 
