@@ -63,9 +63,9 @@ public class BoardController {
         return boardService.getMainFeed(userDetails.getUser(), pageable);
     }
 
-    // 태그 검색
-    @GetMapping("/{hashTags}")
-    public List<MainFeedDto> searchByTag(@PathVariable String hashTags, @AuthenticationPrincipal UserDetailsImpl userDetails){
-        return boardService.searchByTag(hashTags, userDetails.getUser());
-    }
+//    // 태그 검색
+//    @GetMapping("/{hashTags}")
+//    public List<MainFeedDto> searchByTag(@PathVariable String hashTags, @AuthenticationPrincipal UserDetailsImpl userDetails){
+//        return boardService.searchByTag(hashTags, userDetails.getUser());
+//    }
 }
