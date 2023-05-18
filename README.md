@@ -7,13 +7,13 @@
 >
 >   개발 기간 : 2023년 5월 12일 ~ 2023년 5월 18일
 
-# Team
+<h1 align="center">📚 Team </h1>
 
 > 항해99 14기 클론코딩주차 4조
 > 
 > BE : 이동규 임슬기 유범모 조양기
 
-# S.A 링크
+<h1 align="center">📚 S.A Link </h1>
 
 > https://humdrum-bench-28f.notion.site/Instargram-5492f26bda7b4e56ba1d1254f3276216
 
