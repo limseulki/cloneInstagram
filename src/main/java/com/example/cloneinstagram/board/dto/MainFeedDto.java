@@ -31,11 +31,7 @@ public class MainFeedDto {
         this.nickName = board.getNickName();
         this.memberImage = board.getMember().getImg();
         this.createdAt = board.getCreatedAt();
-        this.commentList = board.getCommentList()
-                .stream()
-                .map(CommentResponseDto::new)
-                .collect(Collectors.toList());;
-
+        this.commentList = commentList;
         this.boardLove = boardLove;
         
 

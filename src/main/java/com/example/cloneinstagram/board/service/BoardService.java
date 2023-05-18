@@ -9,11 +9,9 @@ import com.example.cloneinstagram.board.dto.BoardRequestDto;
 import com.example.cloneinstagram.board.dto.BoardResponseDto;
 import com.example.cloneinstagram.board.dto.MainFeedDto;
 import com.example.cloneinstagram.board.entity.Board;
-import com.example.cloneinstagram.board.entity.HashTag;
-import com.example.cloneinstagram.board.entity.Tag_Board;
 import com.example.cloneinstagram.board.repository.BoardRepository;
-import com.example.cloneinstagram.board.repository.HashTagRepository;
-import com.example.cloneinstagram.board.repository.Tag_BoardRepository;
+//import com.example.cloneinstagram.board.repository.HashTagRepository;
+//import com.example.cloneinstagram.board.repository.Tag_BoardRepository;
 import com.example.cloneinstagram.comment.dto.CommentResponseDto;
 import com.example.cloneinstagram.comment.entity.Comment;
 import com.example.cloneinstagram.comment.repository.CommentRepository;
@@ -54,8 +52,8 @@ public class BoardService {
     private final BoardRepository boardRepository;
     private final CommentRepository commentRepository;
     private final FollowRepository followRepository;
-    private final Tag_BoardRepository tag_boardRepository;
-    private final HashTagRepository hashTagRepository;
+//    private final Tag_BoardRepository tag_boardRepository;
+//    private final HashTagRepository hashTagRepository;
     private final BoardLoveRepository boardLoveRepository;
     private final CommentLoveRepository commentLoveRepository;
     private static final String S3_BUCKET_PREFIX = "S3";
@@ -104,23 +102,23 @@ public class BoardService {
         // JPA에서 관계를 맺고 있는 엔티티의 영속성 처리 문제를 위해 먼저 board를 1차 캐시에 save를 보냄
         boardRepository.save(board);
 
-        if(boardRequestDto.getHashtags() != null) {
-            boardRequestDto.setHashtags(boardRequestDto.getHashtags());
-
-            for (String hashTag : boardRequestDto.getHashtags()) {
-                String hashTagString = hashTag.substring(1);
-                HashTag existHashTag = hashTagRepository.findByHashTag(hashTagString);
-                if (existHashTag != null) {
-                    Tag_Board tag_board = new Tag_Board(existHashTag, board);
-                    tag_boardRepository.save(tag_board);
-                } else {
-                    HashTag hashTagTable = new HashTag(hashTagString);
-                    hashTagRepository.save(hashTagTable);
-                    Tag_Board tag_board = new Tag_Board(hashTagTable, board);
-                    tag_boardRepository.save(tag_board);
-                }
-            }
-        }
+//        if(boardRequestDto.getHashtags() != null) {
+//            boardRequestDto.setHashtags(boardRequestDto.getHashtags());
+//
+//            for (String hashTag : boardRequestDto.getHashtags()) {
+//                String hashTagString = hashTag.substring(1);
+//                HashTag existHashTag = hashTagRepository.findByHashTag(hashTagString);
+//                if (existHashTag != null) {
+//                    Tag_Board tag_board = new Tag_Board(existHashTag, board);
+//                    tag_boardRepository.save(tag_board);
+//                } else {
+//                    HashTag hashTagTable = new HashTag(hashTagString);
+//                    hashTagRepository.save(hashTagTable);
+//                    Tag_Board tag_board = new Tag_Board(hashTagTable, board);
+//                    tag_boardRepository.save(tag_board);
+//                }
+//            }
+//        }
         return ResponseEntity.ok(new BoardResponseDto(board));
     }
 
@@ -185,24 +183,24 @@ public class BoardService {
         return ResponseEntity.ok(mainFeedPage);
     }
 
-    // 태그 검색
-    public List<MainFeedDto> searchByTag(String hashTag, Member member){
-        List<MainFeedDto> searchFeedByTag = new ArrayList<>();
-
-        HashTag hashTagTable = hashTagRepository.findByHashTag(hashTag);
-
-        if(hashTagTable == null){
-            throw new CustomException(ErrorCode.HASHTAG_NOT_FOUND);
-        }
-        List<Board> searchBoardByTag = tag_boardRepository.selectBoardByTag(hashTagTable.getId());
-        for(Board board : searchBoardByTag){
-            boardLove = boardLoveRepository.findBoardLoveCheck(board.getId(), member.getId());
-            searchFeedByTag.add(new MainFeedDto(board, getCommentList(board.getId(), member), boardLove));
-        }
-
-        searchFeedByTag.sort(Comparator.comparing(MainFeedDto::getCreatedAt).reversed());
-        return searchFeedByTag;
-    }
+//    // 태그 검색
+//    public List<MainFeedDto> searchByTag(String hashTag, Member member){
+//        List<MainFeedDto> searchFeedByTag = new ArrayList<>();
+//
+//        HashTag hashTagTable = hashTagRepository.findByHashTag(hashTag);
+//
+//        if(hashTagTable == null){
+//            throw new CustomException(ErrorCode.HASHTAG_NOT_FOUND);
+//        }
+//        List<Board> searchBoardByTag = tag_boardRepository.selectBoardByTag(hashTagTable.getId());
+//        for(Board board : searchBoardByTag){
+//            boardLove = boardLoveRepository.findBoardLoveCheck(board.getId(), member.getId());
+//            searchFeedByTag.add(new MainFeedDto(board, getCommentList(board.getId(), member), boardLove));
+//        }
+//
+//        searchFeedByTag.sort(Comparator.comparing(MainFeedDto::getCreatedAt).reversed());
+//        return searchFeedByTag;
+//    }
 
     // 게시글에 달린 댓글 가져오기
     private List<CommentResponseDto> getCommentList(Long boardId, Member member) {
