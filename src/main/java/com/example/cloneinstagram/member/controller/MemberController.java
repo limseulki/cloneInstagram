@@ -19,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.IOException;
+import java.util.List;
 
 @RestController
 @RequestMapping("/members")
@@ -37,15 +38,13 @@ public class MemberController {
     }
 
     @GetMapping("/followers")
-    public Page<MemberResponseDto> getFollowerMemberList(@AuthenticationPrincipal UserDetailsImpl userDetails,
-                                                 @PageableDefault(size = 6, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
-        return memberService.getFollowerUserList(userDetails.getUser(), pageable);
+    public List<MemberResponseDto> getFollowerMemberList(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return memberService.getFollowerUserList(userDetails.getUser());
     }
 
     @GetMapping("/recommends")
-    public Page<MemberResponseDto> getUnFollowerMemberList(@AuthenticationPrincipal UserDetailsImpl userDetails,
-                                                         @PageableDefault(size = 6, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
-        return memberService.getUnFollowerList(userDetails.getUser(), pageable);
+    public List<MemberResponseDto> getUnFollowerMemberList(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return memberService.getUnFollowerList(userDetails.getUser());
     }
 
     @PostMapping("/{nickName}")
