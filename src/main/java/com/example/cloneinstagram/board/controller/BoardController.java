@@ -57,7 +57,7 @@ public class BoardController {
     @Operation(summary = "전체 피드 조회 API", description = "전체 피드 조회")
     @GetMapping("/")
     public ResponseEntity<Page<MainFeedDto>> getMainFeed(@AuthenticationPrincipal UserDetailsImpl userDetails,
-                                                         @RequestParam(defaultValue = "5") int pageSize,
+                                                         @RequestParam(defaultValue = "20") int pageSize,
                                                          @RequestParam(defaultValue = "0") int pageNumber) {
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
         return boardService.getMainFeed(userDetails.getUser(), pageable);
