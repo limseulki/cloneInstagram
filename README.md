@@ -1,4 +1,4 @@
-<img src="https://capsule-render.vercel.app/api?type=soft&color=auto&height=150&section=header&text=🌼Instagram!%20클론코딩!🌼&fontSize=70" />
+<img src="https://capsule-render.vercel.app/api?type=soft&color=auto&height=150&section=header&text=🧑‍💻Instagram%20클론코딩!👩‍💻&fontSize=70" />
 <!-- # Instagram 클론코딩 -->
 
 <img src="https://github.com/yoobeommo/cloneInstagram/assets/105355963/c7585792-7a70-4617-81e7-205f272fb5d6"  width="100" height="100"/>
