@@ -18,3 +18,5 @@
 > https://humdrum-bench-28f.notion.site/Instargram-5492f26bda7b4e56ba1d1254f3276216
 
 
+# ERD
+![image](https://github.com/yoobeommo/cloneInstagram/assets/105355963/a33c809f-8361-496d-a8ee-4bb03c7f567e)
