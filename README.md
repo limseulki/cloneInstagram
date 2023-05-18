@@ -7,23 +7,23 @@
 >
 >   개발 기간 : 2023년 5월 12일 ~ 2023년 5월 18일
 
-<h1 align="center">📚 Team </h1>
+<h1 align="center">👬 Team </h1>
 
 > 항해99 14기 클론코딩주차 4조
 > 
 > BE : 이동규 임슬기 유범모 조양기
 
-<h1 align="center">📚 S.A Link </h1>
+<h1 align="center">🔗 S.A Link </h1>
 
 > https://humdrum-bench-28f.notion.site/Instargram-5492f26bda7b4e56ba1d1254f3276216
 
 
-<h1 align="center">📚 ERD </h1>
+<h1 align="center">🎨 ERD </h1>
 
 ![image](https://github.com/yoobeommo/cloneInstagram/assets/105355963/a33c809f-8361-496d-a8ee-4bb03c7f567e)
 
 
- <h1 align="center">📚 Use Tech Stack </h1>
+ <h1 align="center">🔨 Use Tech Stack </h1>
     
 <!-- <img src="https://img.shields.io/badge/Java-007396?style=flat-square&logo=Java&logoColor=white"/>  <img src="https://img.shields.io/badge/Spring-6DB33F?style=flat-square&logo=Spring&logoColor=white">  <img src="https://img.shields.io/badge/SpringBoot-6DB33F?style=flat-square&logo=SpringBoot&logoColor=white">  <img src="https://img.shields.io/badge/MySQL-4479A1?style=flat-square&logo=MySQL&logoColor=white">  <img src="https://img.shields.io/badge/Amazon AWS-232F3E?style=flat-square&logo=AmazonAWS&logoColor=white"/>  <img src="https://img.shields.io/badge/Amazon RDS-527FFF?style=flat-square&logo=AmazonRDS&logoColor=white"/>  <img src="https://img.shields.io/badge/Amazon EC2-FF9900?style=flat-square&logo=AmazonEC2&logoColor=white"/>  <img src="https://img.shields.io/badge/Amazon S3-569A31?style=flat-square&logo=AmazonS3&logoColor=white"/> -->
 
