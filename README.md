@@ -13,11 +13,6 @@
 > 
 > BE : 이동규 임슬기 유범모 조양기
 
-<h1 align="left">🔗 S.A Link </h1>
-
-> https://humdrum-bench-28f.notion.site/Instargram-5492f26bda7b4e56ba1d1254f3276216
-
-
 <h1 align="left">🎨 ERD </h1>
 
 ![image](https://github.com/yoobeommo/cloneInstagram/assets/105355963/a33c809f-8361-496d-a8ee-4bb03c7f567e)
